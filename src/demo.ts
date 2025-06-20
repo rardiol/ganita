@@ -128,21 +128,24 @@ function setNewInput(el, windowCounterID) {
 
 window.check = async function check() {
     console.log("check");
+    let accInp = "";
     for (const el of document.querySelectorAll("input.formularinp") as NodeListOf<HTMLInputElement>) {
         console.log("check for");
-
-        let output: string;
-        try {
-            console.log("check await");
-
-            output = await asyncRun(el.value);
-            console.log(output);
-        } catch (err) {
-            console.log(err);
-            return;
-        }
-        el.value = output;
+        accInp += el.value;
     }
+
+    anitaInputArea.innerText = accInp;
+
+    let output: string;
+    try {
+        console.log("check await");
+        output = await asyncRun(accInp);
+        console.log(output);
+    } catch (err) {
+        console.log(err);
+        return;
+    }
+    anitaOutputArea.innerText = output;
 }
 
 console.log("readying");
