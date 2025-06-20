@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./my1",
+    "allowJs": true,
+    "target": "es6",
+    "module": "es2022",
+    "moduleResolution": "bundler"
+  },
+  "include": ["./src/**/*"]
+}

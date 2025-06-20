@@ -1,9 +1,18 @@
-"use strict";
+import {ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
+import { loadPyodide } from "../node_modules/pyodide/pyodide.mjs";
+
 
 var windowCounterID = 0;
 
-const canvas = document.getElementById("canvas");
-const dragDropWindowTemplate = document.querySelector("#dragDropWindowTemplate");
+const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
+const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
+
+declare global {
+    interface Window {
+        check: Function;
+        j: JsPlumbInstance;
+    }
+}
 
 // configure some drop options for use by all endpoints.
 const exampleDropOptions = {
@@ -39,18 +48,17 @@ const targetEndpoint = {
     dropOptions: exampleDropOptions
 };
 
-jsPlumb.ready(function () {
+jsPlumbReady(function () {
 
-    var instance = window.j = jsPlumb.newInstance({
+    var instance = window.j = jsPlumbNewInstance({
         dragOptions: { cursor: 'pointer', zIndex: 2000 },
         paintStyle: { stroke: '#666' },
         endpointHoverStyle: { fill: "orange" },
         hoverPaintStyle: { stroke: "orange" },
         endpointStyle: { width: 20, height: 16, stroke: '#666' },
         endpoint: "Rectangle",
-        anchors: ["TopCenter", "TopCenter"],
+        anchors: ["Top", "Top"],
         container: canvas,
-        dropOptions: { activeClass: "dragActive", hoverClass: "dropHover" },
         connectionOverlays: [
             {
                 type: "Arrow",
@@ -62,7 +70,7 @@ jsPlumb.ready(function () {
     // suspend drawing and initialise.
     instance.batch(function () {
 
-        var dd1 = document.getElementById('dragDropWindow1');
+        var dd1 = document.getElementById('dragDropWindow1')!;
 
         setNewInput(dd1, windowCounterID);
 
@@ -96,7 +104,7 @@ jsPlumb.ready(function () {
 function createNewWindow(current, instance) {
     windowCounterID += 1;
 
-    const newWindow = dragDropWindowTemplate.content.firstElementChild.cloneNode(true);
+    const newWindow = dragDropWindowTemplate.content.firstElementChild!.cloneNode(true) as HTMLDivElement;
 
     setNewInput(newWindow, windowCounterID);
 
@@ -114,8 +122,6 @@ function setNewInput(el, windowCounterID) {
     newInput.setAttribute("id", "input" + windowCounterID);
     newInput.setAttribute("name", windowCounterID);
 }
-
-
 
 async function mainPyodide() {
     console.log("mainPyodide");
@@ -160,10 +166,9 @@ async function evaluatePython(inp) {
     }
 }
 
-
 window.check = async function check() {
     console.log("check!");
-    for (const el of document.querySelectorAll("input.formularinp")) {
+    for (const el of document.querySelectorAll("input.formularinp") as NodeListOf<HTMLInputElement>) {
         console.log(el.value);
         const val = await evaluatePython(el.value);
         console.log(val);
