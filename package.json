@@ -2,6 +2,7 @@
   "dependencies": {
     "@jsplumb/browser-ui": "^6.2.10",
     "@jsplumb/connector-bezier": "^5.13.7",
-    "@jsplumb/connector-flowchart": "^5.13.7"
+    "@jsplumb/connector-flowchart": "^5.13.7",
+    "pyodide": "^0.27.7"
   }
 }
