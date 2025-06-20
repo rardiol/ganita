@@ -1,5 +1,5 @@
-import {ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
-import { loadPyodide } from "../node_modules/pyodide/pyodide.mjs";
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
+import { asyncRun } from "./workerApi.js";
 
 
 var windowCounterID = 0;
@@ -8,7 +8,7 @@ const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
 const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
 const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
 const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
-
+const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
 
 declare global {
     interface Window {
@@ -126,55 +126,29 @@ function setNewInput(el, windowCounterID) {
     newInput.setAttribute("name", windowCounterID);
 }
 
-async function mainPyodide() {
-    console.log("mainPyodide");
-    let pyodide = await loadPyodide();
-    console.log("loaded pyodide");
-    await pyodide.loadPackage(
-        ['https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl',
-            'https://files.pythonhosted.org/packages/c0/7c/f66be9e75485ae6901ae77d8bdbc3c0e99ca748ab927b3e18205759bde09/rply-0.7.8-py2.py3-none-any.whl',
-            '../lib/anita-0.1.13-py3-none-any.whl']);
-    console.log("loaded packages");
-
-    pyodide.runPython(`
-
-from pyodide.ffi import to_js
-
-import anita
-
-from anita.anita_en_fo import check_proof
-
-def test(inp):
-    return to_js(inp + " FOO")
-
-  `);
-    console.log("ran pyodide");
-
-    return pyodide;
-}
-
-let pyodideReadyPromise = mainPyodide();
-
-async function evaluatePython(inp) {
-    console.log("evaluatePython");
-
-    let pyodide = await pyodideReadyPromise;
-    console.log("evaluatePython await pyodideReadyPromise");
-    try {
-        let output = pyodide.globals.get("test")(inp);
-        console.log(output);
-        return output;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 window.check = async function check() {
-    console.log("check!");
+    console.log("check");
     for (const el of document.querySelectorAll("input.formularinp") as NodeListOf<HTMLInputElement>) {
-        console.log(el.value);
-        const val = await evaluatePython(el.value);
-        console.log(val);
-        el.value = val;
+        console.log("check for");
+
+        let output: string;
+        try {
+            console.log("check await");
+
+            output = await asyncRun(el.value);
+            console.log(output);
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+        el.value = output;
     }
 }
+
+console.log("readying");
+asyncRun("start").then(function (result) {
+    console.log("ready");
+    checkButton.disabled = false;
+    checkButton.innerText = "Check";
+})
+console.log("readying2");
