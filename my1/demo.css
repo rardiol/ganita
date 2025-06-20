@@ -90,3 +90,7 @@ path, .jtk-endpoint { cursor:pointer; }
 [jtk-not-draggable] {
     border:2px solid darkorange !important;
 }
+
+.outputp {
+    border: solid;
+}

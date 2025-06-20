@@ -6,6 +6,9 @@ var windowCounterID = 0;
 
 const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
 const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
+const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
+const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
+
 
 declare global {
     interface Window {
