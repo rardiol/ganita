@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>ANITA MY1</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="../node_modules/@jsplumb/browser-ui/css/jsplumbtoolkit.css">
+    <link rel="stylesheet" href="../node_modules/@jsplumb/browser-ui/css/jsplumbtoolkit-demo.css">
+    <link rel="stylesheet" href="demo.css">
+</head>
+
+<body>
+    <div class="jtk-demo-main">
+
+        <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas" style="height: 400px;">
+            <div class="window root" id="dragDropWindow1">
+                <input type="text" required size="14" class="formularinp">
+                </input>
+            </div>
+            <template id="dragDropWindowTemplate">
+                <div class="window">
+                    <input type="text" required size="14" class="formularinp">
+                    </input>
+                    <button class="closebtn">Close
+                    </button>
+                </div>
+            </template>
+        </div>
+
+        <button class="checkbtn" onclick="check()">Check</button>
+
+        <div class="description">
+            Bla bla bla
+        </div>
+    </div>
+
+    <script type="module" src="../node_modules/@jsplumb/util/js/jsplumb.util.umd.js"></script>
+    <script type="module" src="../node_modules/@jsplumb/common/js/jsplumb.common.umd.js"></script>
+    <script type="module" src="../node_modules/@jsplumb/core/js/jsplumb.core.umd.js"></script>
+    <script type="module" src="../node_modules/@jsplumb/connector-bezier/js/jsplumb.connector-bezier.umd.js"></script>
+    <script type="module"
+        src="../node_modules/@jsplumb/connector-flowchart/js/jsplumb.connector-flowchart.umd.js"></script>
+    <script type="module" src="../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.umd.js"></script>
+
+    <script type="module" src="demo.js"></script>
+
+</body>
+
+</html>
