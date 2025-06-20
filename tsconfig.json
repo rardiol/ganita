@@ -4,7 +4,8 @@
     "allowJs": true,
     "target": "es6",
     "module": "es2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "inlineSourceMap": true,
   },
   "include": ["./src/**/*"]
 }
