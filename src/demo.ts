@@ -149,6 +149,7 @@ window.check = async function check() {
 }
 
 console.log("readying");
+checkButton.disabled = true;
 asyncRun("start").then(function (result) {
     console.log("ready");
     checkButton.disabled = false;
