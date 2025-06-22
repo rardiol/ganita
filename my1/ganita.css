@@ -1,3 +1,7 @@
+* {
+    position: relative;
+}
+
 .demo {
     /* for IE10+ touch devices */
     touch-action:none;
@@ -27,7 +31,7 @@
     -moz-box-shadow: 2px 2px 19px #aaa;
     -moz-border-radius: 0.5em;
     border-radius: 0.5em;
-    position: absolute;
+    position: relative;
     color: black;
     padding-top: 5px;
     width: 140px;
