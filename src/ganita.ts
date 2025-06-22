@@ -1,7 +1,7 @@
 import { asyncRun } from "./workerApi.js";
-import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
 //import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector } from "@jsplumb/browser-ui"
-import Split from '../node_modules/split.js/dist/split.es.js'
+import Split from 'split.js/dist/split.es.js'
 
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier/connector-bezier.js";
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier//js/jsplumb.connector-bezier.es.js";
