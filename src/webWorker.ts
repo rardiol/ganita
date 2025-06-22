@@ -61,7 +61,7 @@ self.onmessage = async (event: MessageEvent<{ id: number, msg: string }>) => {
         console.log(await pyodide.runPythonAsync("test3()", { locals }));
         console.log("runPythonAsync1 test3 2");
         console.log("runPythonAsync1");
-        const result = await pyodide.runPythonAsync("test(inp)", { locals });
+        const result = await pyodide.runPythonAsync("check_proof(inp)", { locals });
         console.log(result);
         console.log(typeof result);
         console.log("runPythonAsync2");

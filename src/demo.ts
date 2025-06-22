@@ -176,24 +176,20 @@ function setNewInput(el, windowCounterID) {
 
 window.check = async function check() {
     console.log("check");
-    let accInp = "";
-    for (const el of document.querySelectorAll("input.formularinp") as NodeListOf<HTMLInputElement>) {
-        console.log("check for");
-        accInp += el.value;
-    }
+    let anitaInput = tree2anita();
 
-    anitaInputArea.innerText = accInp;
+    anitaInputArea.innerText = anitaInput;
 
-    let output: string;
+    let anitaOutput: string;
     try {
         console.log("check await");
-        output = await asyncRun(accInp);
-        console.log(output);
+        anitaOutput = await asyncRun(anitaInput);
+        console.log(anitaOutput);
     } catch (err) {
         console.log(err);
         return;
     }
-    anitaOutputArea.innerText = output;
+    anitaOutputArea.innerText = anitaOutput;
 }
 
 console.log("readying");
@@ -204,3 +200,127 @@ asyncRun("start").then(function (result) {
     checkButton.innerText = "Check";
 })
 console.log("readying2");
+
+
+
+function tree2anita(): string {
+    return tree2anitaStep(dd1, 1, new Map(), false).output;
+}
+
+function tree2anitaStep(
+    el: HTMLElement,
+    lineNumber: number,
+    idMap: Map<string, number>,
+    forking: boolean)
+    : { output: string, ruleApply: boolean, lineNumber: number } {
+
+    let output = "";
+    const children = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["down"] });
+    const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
+    idMap.set(el.getAttribute("data-jtk-managed"), lineNumber);
+
+    console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications);
+
+    if (justifications.length == 0 && children.length < 3 && children.length > 0 && !forking) { // pre or conclusion
+        console.log("tree2anitaStep 1");
+        output += lineNumber++;
+        output += ". ";
+        if (forking) {
+            output += "{ ";
+        }
+        output += (el.querySelector("input.formularinp") as HTMLInputElement).value;
+        output += " ";
+
+        if (children.length == 1) {
+            console.log("tree2anitaStep 2");
+            let childResult = tree2anitaStep(children.entries[0].target, lineNumber, idMap, false);
+            lineNumber = childResult.lineNumber;
+            if (childResult.ruleApply) {
+                output += "conclusion";
+            } else {
+                output += "pre";
+            }
+            output += "\n";
+            output += childResult.output;
+        } else if (children.length == 2) {
+            console.log("tree2anitaStep 3");
+            let child0Result = tree2anitaStep(children.entries[0].target, lineNumber, idMap, true);
+            let child1Result = tree2anitaStep(children.entries[1].target, child0Result.lineNumber, idMap, true);
+            lineNumber = child1Result.lineNumber;
+
+            output += " conclusion";
+
+            output += "\n";
+            output += child0Result.output;
+            output += "} \n"
+            output += child1Result.output;
+            output += "} \n"
+        } else {
+            console.log("tree2anitaStep unreachable 4");
+        }
+        return { output, ruleApply: false, lineNumber };
+    } else if (justifications.length == 1 && children.length < 3) { // rule apply
+        console.log("tree2anitaStep 5");
+        output += lineNumber++;
+        output += ". ";
+        if (forking) {
+            output += "{ ";
+        }
+        output += (el.querySelector("input.formularinp") as HTMLInputElement).value;
+        output += " ";
+
+        if (children.length == 1) {
+            console.log("tree2anitaStep 6");
+            let childResult = tree2anitaStep(children.entries[0].target, lineNumber, idMap, false);
+            lineNumber = childResult.lineNumber;
+
+            output += idMap.get(justifications.entries[0].target.getAttribute("data-jtk-managed"));
+
+            output += "\n";
+            output += childResult.output;
+        } else if (children.length == 2) {
+            console.log("tree2anitaStep 7");
+            let child0Result = tree2anitaStep(children.entries[0].target, lineNumber, idMap, true);
+            let child1Result = tree2anitaStep(children.entries[1].target, child0Result.lineNumber, idMap, true);
+            lineNumber = child1Result.lineNumber;
+
+            output += idMap.get(justifications.entries[0].target.getAttribute("data-jtk-managed"));
+
+            output += "\n";
+            output += child0Result.output;
+            output += "} \n"
+            output += child1Result.output;
+            output += "} \n"
+        } else if (children.length == 0) { // unsaturated
+            console.log("tree2anitaStep 8");
+            output += "\n";
+        } else {
+            console.log("tree2anitaStep unreachable 9");
+        }
+        return { output, ruleApply: true, lineNumber };
+
+
+    } else if (justifications.length == 2 && children.length == 0 && !forking) { // @ contradiction
+        console.log("tree2anitaStep 10");
+        output += lineNumber++;
+        output += ". ";
+        output += "@ ";
+
+        ///todo
+        output += idMap.get(justifications.entries[0].target.getAttribute("data-jtk-managed"));
+        output += ","
+        output += idMap.get(justifications.entries[1].target.getAttribute("data-jtk-managed"));
+
+        // TODO: handle fechos com texto  output += (dd1.querySelector("input.formularinp") as HTMLInputElement).value;
+
+        output += "\n";
+
+        return { output, ruleApply: true, lineNumber };
+
+    } else {
+        console.log("tree2anitaStep fail", el, lineNumber, idMap, forking);
+        throw "tree2anitaStep fail"; // TODO Gracefully handle user mistakes
+    };
+}
+
+// TODO: left right on bifurcating rules ANITA demands it be ordered
