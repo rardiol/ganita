@@ -1,6 +1,7 @@
 import { asyncRun } from "./workerApi.js";
 import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
 //import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector } from "@jsplumb/browser-ui"
+import Split from '../node_modules/split.js/dist/split.es.js'
 
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier/connector-bezier.js";
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier//js/jsplumb.connector-bezier.es.js";
@@ -23,6 +24,10 @@ declare global {
     }
 }
 
+
+console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div']));
+
+
 function myBeforeDrop(params) {
 
     if (params.sourceId == params.targetId) {
@@ -40,7 +45,7 @@ function myBeforeDrop(params) {
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    paintStyle: { fill: "#00f", width: 50, height:20 },
+    paintStyle: { fill: "#00f", width: 50, height:40 },
     source: true,
     target: false,
     scope: "down",
@@ -55,7 +60,7 @@ const sourceEndpoint: EndpointOptions = {
 
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    paintStyle: { fill: "#00f", width: 50, height: 20 },
+    paintStyle: { fill: "#00f", width: 50, height: 40 },
     source: false,
     target: true,
     scope: "down",
@@ -66,12 +71,13 @@ const targetEndpoint: EndpointOptions = {
 
 const justificationSourceEndpoint: EndpointOptions = {
     endpoint: "Dot",
-    paintStyle: { fill: "#0F0", width: 50, height: 20 },
+    paintStyle: { fill: "#0F0", width: 50, height: 40 },
     source: true,
     target: false,
     scope: "back",
     connectionsDirected: true,
     maxConnections: 2,
+    radius:40,
     connectorStyle: {
         strokeWidth: 5,
         stroke: "#0F0",
@@ -86,7 +92,7 @@ const justificationSourceEndpoint: EndpointOptions = {
 
 const justificationTargetEndpoint: EndpointOptions = {
     endpoint: "Dot",
-    paintStyle: { fill: "#080", radius:40 },
+    paintStyle: { fill: "#080", radius:60 },
     source: false,
     target: true,
     scope: "back",
@@ -99,12 +105,6 @@ jsPlumbReady(function () {
 
     var instance = window.j = jsPlumbNewInstance({
         dragOptions: { cursor: 'pointer', zIndex: 2000 },
-        paintStyle: { stroke: '#666' },
-        endpointHoverStyle: { fill: "orange" },
-        hoverPaintStyle: { stroke: "orange" },
-        endpointStyle: { width: 20, height: 16, stroke: '#666' },
-        endpoint: "Rectangle",
-        anchors: ["Top", "Top"],
         container: canvas,
         connectionOverlays: [
             {
@@ -311,16 +311,12 @@ function tree2anitaStep(
         output += ","
         output += idMap.get(justifications.entries[1].target.getAttribute("data-jtk-managed"));
 
-        // TODO: handle fechos com texto  output += (dd1.querySelector("input.formularinp") as HTMLInputElement).value;
-
         output += "\n";
 
         return { output, ruleApply: true, lineNumber };
 
     } else {
         console.log("tree2anitaStep fail", el, lineNumber, idMap, forking);
-        throw "tree2anitaStep fail"; // TODO Gracefully handle user mistakes
+        throw "tree2anitaStep fail"; 
     };
 }
-
-// TODO: left right on bifurcating rules ANITA demands it be ordered
