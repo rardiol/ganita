@@ -19,13 +19,18 @@
 
 
         <p id="description">
-            Desenhe o Tableau Analítico
+        <ul>
+            <li>Desenhe o Tableau Analítico </li>
+            <li>Azul: Aplicação de regras de desenvolvimento da árvore</li>
+            <li>Verde: Justificativa da aplicação da regra</li>
+            <li>Vermelho: Fecho/contradição</li>
+        </ul>
         </p>
         <button id="checkbtn" onclick="check()" disabled>Check ⏳</button>
 
         <div>
 
-            <div id="canvas_div"  class="split">
+            <div id="canvas_div" class="split">
                 <h2>Tableau Analítico</h2>
 
                 <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas"
@@ -45,7 +50,7 @@
                 </div>
             </div>
 
-            <div id="anita_input_div"  class="split">
+            <div id="anita_input_div" class="split">
                 <h2>Entrada ANITA (a la Fitch)</h2>
                 <p id="anita_input" class="outputp">
                     Clique em "Check"
