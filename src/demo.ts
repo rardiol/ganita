@@ -1,6 +1,10 @@
-import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
 import { asyncRun } from "./workerApi.js";
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
+//import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector } from "@jsplumb/browser-ui"
 
+//import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier/connector-bezier.js";
+//import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier//js/jsplumb.connector-bezier.es.js";
+//import { FlowchartConnector } from "../node_modules/@jsplumb/connector-flowchart/connector-flowchart.js";
 
 var windowCounterID = 0;
 
@@ -9,6 +13,8 @@ const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("temp
 const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
 const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
 const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
+const dd1 = document.getElementById('dragDropWindow1')!;
+
 
 declare global {
     interface Window {
@@ -17,39 +23,77 @@ declare global {
     }
 }
 
-// configure some drop options for use by all endpoints.
-const exampleDropOptions = {
-    tolerance: "touh",
-    hoverClass: "dropHover",
-    activeClass: "dragActive"
-};
+function myBeforeDrop(params) {
 
-const sourceEndpoint = {
+    if (params.sourceId == params.targetId) {
+        console.log("block selfconnection");
+        return false;
+    }
+
+    if (window.j.select({ source: params.sourceId, target: params.targetId }).length >= 1) {
+        console.log("block doubleconnect");
+        return false;
+    }
+
+    return true;
+}
+
+const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    paintStyle: { width: 25, height: 25, fill: "#00f" },
+    paintStyle: { fill: "#00f", width: 50, height:20 },
     source: true,
     target: false,
-    reattach: true,
     scope: "down",
+    connectionsDirected: true,
     maxConnections: 2,
     connectorStyle: {
         strokeWidth: 5,
         stroke: "#00f",
         dashstyle: "2 2"
     },
-    dropOptions: exampleDropOptions
 };
 
-const targetEndpoint = {
+const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    paintStyle: { width: 25, height: 25, fill: "#00f" },
+    paintStyle: { fill: "#00f", width: 50, height: 20 },
     source: false,
     target: true,
-    reattach: true,
     scope: "down",
     maxConnections: 1,
-    dropOptions: exampleDropOptions
+    beforeDrop: myBeforeDrop,
+
 };
+
+const justificationSourceEndpoint: EndpointOptions = {
+    endpoint: "Dot",
+    paintStyle: { fill: "#0F0", width: 50, height: 20 },
+    source: true,
+    target: false,
+    scope: "back",
+    connectionsDirected: true,
+    maxConnections: 2,
+    connectorStyle: {
+        strokeWidth: 5,
+        stroke: "#0F0",
+        dashstyle: "2 2"
+    },
+    connector: {
+        type: StateMachineConnector.type,
+        options: {curviness: 40}
+    }
+
+};
+
+const justificationTargetEndpoint: EndpointOptions = {
+    endpoint: "Dot",
+    paintStyle: { fill: "#080", radius:40 },
+    source: false,
+    target: true,
+    scope: "back",
+    maxConnections: -1,
+    beforeDrop: myBeforeDrop,
+};
+
 
 jsPlumbReady(function () {
 
@@ -73,8 +117,6 @@ jsPlumbReady(function () {
     // suspend drawing and initialise.
     instance.batch(function () {
 
-        var dd1 = document.getElementById('dragDropWindow1')!;
-
         setNewInput(dd1, windowCounterID);
 
         dd1.style.left = "50px";
@@ -82,10 +124,13 @@ jsPlumbReady(function () {
 
         var e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
 
+        var e1 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, justificationTargetEndpoint);
+
+
         createNewWindow(dd1, instance);
         instance.bind("connection", function (info, originalEvent) {
             console.log("connection");
-            createNewWindow(info.target, instance);
+            //createNewWindow(info.target, instance);
         });
 
         instance.bind("endpoint:dblclick", function (info, originalEvent) {
@@ -116,6 +161,9 @@ function createNewWindow(current, instance) {
 
     var endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
     var endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
+    var endpointJustTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, justificationTargetEndpoint);
+    var endpointSourceTarget = instance.addEndpoint(newWindow, { anchor: "TopRight" }, justificationSourceEndpoint);
+
 
     canvas.appendChild(newWindow);
 }
