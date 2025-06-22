@@ -25,7 +25,7 @@ declare global {
 }
 
 
-console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div']));
+console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div'], [60, 20, 20]));
 
 
 function myBeforeDrop(params) {
