@@ -1,7 +1,7 @@
 import { asyncRun } from "./workerApi.js";
-import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
 //import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector } from "@jsplumb/browser-ui"
-import Split from 'split.js/dist/split.es.js'
+import Split from '../node_modules/split.js/dist/split.es.js'
 
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier/connector-bezier.js";
 //import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier//js/jsplumb.connector-bezier.es.js";
@@ -70,14 +70,13 @@ const targetEndpoint: EndpointOptions = {
 };
 
 const justificationSourceEndpoint: EndpointOptions = {
-    endpoint: "Dot",
-    paintStyle: { fill: "#0F0", width: 50, height: 40 },
+    endpoint: {type:"Dot", options:{ radius: 20 }},
+    paintStyle: { fill: "#0F0"},
     source: true,
     target: false,
     scope: "back",
     connectionsDirected: true,
     maxConnections: 2,
-    radius:40,
     connectorStyle: {
         strokeWidth: 5,
         stroke: "#0F0",
@@ -91,8 +90,8 @@ const justificationSourceEndpoint: EndpointOptions = {
 };
 
 const justificationTargetEndpoint: EndpointOptions = {
-    endpoint: "Dot",
-    paintStyle: { fill: "#080", radius:60 },
+    endpoint: {type:"Dot", options:{ radius: 20 }},
+    paintStyle: { fill: "#080"},
     source: false,
     target: true,
     scope: "back",
