@@ -29,13 +29,13 @@ console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div']));
 
 
 function myBeforeDrop(params) {
-
+console.log("myBeforeDrop", params);
     if (params.sourceId == params.targetId) {
         console.log("block selfconnection");
         return false;
     }
 
-    if (window.j.select({ source: params.sourceId, target: params.targetId }).length >= 1) {
+    if (window.j.select({ source: params.sourceId, target: params.targetId, scope: params.scope }).length >= 1) {
         console.log("block doubleconnect");
         return false;
     }
@@ -76,7 +76,7 @@ const justificationSourceEndpoint: EndpointOptions = {
     target: false,
     scope: "back",
     connectionsDirected: true,
-    maxConnections: 2,
+    maxConnections: 1,
     connectorStyle: {
         strokeWidth: 5,
         stroke: "#0F0",
@@ -98,6 +98,38 @@ const justificationTargetEndpoint: EndpointOptions = {
     maxConnections: -1,
     beforeDrop: myBeforeDrop,
 };
+
+
+const closureSourceEndpoint: EndpointOptions = {
+    endpoint: {type:"Dot", options:{ radius: 20 }},
+    paintStyle: { fill: "#F00"},
+    source: true,
+    target: false,
+    scope: "closure",
+    connectionsDirected: true,
+    maxConnections: 1,
+    connectorStyle: {
+        strokeWidth: 5,
+        stroke: "#F00",
+        dashstyle: "2 2"
+    },
+    connector: {
+        type: StateMachineConnector.type,
+        options: {curviness: 40}
+    }
+
+};
+
+const closureTargetEndpoint: EndpointOptions = {
+    endpoint: {type:"Dot", options:{ radius: 20 }},
+    paintStyle: { fill: "#800"},
+    source: false,
+    target: true,
+    scope: "closure",
+    maxConnections: -1,
+    beforeDrop: myBeforeDrop,
+};
+
 
 
 jsPlumbReady(function () {
@@ -122,8 +154,8 @@ jsPlumbReady(function () {
         dd1.style.top = "50px";
 
         var e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
-
-        var e1 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, justificationTargetEndpoint);
+        var e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+        var e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
 
 
         createNewWindow(dd1, instance);
@@ -160,9 +192,10 @@ function createNewWindow(current, instance) {
 
     var endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
     var endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
-    var endpointJustTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, justificationTargetEndpoint);
-    var endpointSourceTarget = instance.addEndpoint(newWindow, { anchor: "TopRight" }, justificationSourceEndpoint);
-
+    var endpointJustificationTarget = instance.addEndpoint(newWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+    var endpointJustificationSource = instance.addEndpoint(newWindow, { anchor: "TopLeft" }, justificationSourceEndpoint);
+    var endpointClosureTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, closureTargetEndpoint);
+    var endpointClosureSource = instance.addEndpoint(newWindow, { anchor: "TopRight" }, closureSourceEndpoint);
 
     canvas.appendChild(newWindow);
 }
@@ -211,16 +244,42 @@ function tree2anitaStep(
     lineNumber: number,
     idMap: Map<string, number>,
     forking: boolean)
-    : { output: string, ruleApply: boolean, lineNumber: number } {
+    : { output: string, conclusion: boolean, lineNumber: number } {
 
     let output = "";
+    let conclusion = false;
     const children = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["down"] });
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
+    const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
+
     idMap.set(el.getAttribute("data-jtk-managed"), lineNumber);
 
-    console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications);
+    console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications, closures);
 
-    if (justifications.length == 0 && children.length < 3 && children.length > 0 && !forking) { // pre or conclusion
+    /*
+        children    justifications  closure     general/forking
+        0           0               0           fail(incomplete) N
+        1           0               0           pre/conclusion N
+        2           0               0           conclusion N
+        0           1               0           saturation Y
+        1           1               0           rule apply Y
+        2           1               0           rule apply and forking Y
+        0           0               1           tautological contradiction N
+    X   1           0               1           fail
+    X   2           0               1           fail
+        0           1               1           rule apply and closure Y
+    X   1           1               1           fail
+    X   2           1               1           fail
+    */
+
+    if(justifications.length == 0 && forking) {
+        throw "Cannot fork without justification";
+    }
+    if(children.length > 0 && closures.length > 0) {
+        throw "Cannot have children on a closed tree"
+    }
+
+    if (justifications.length == 0) { // pre or conclusion
         console.log("tree2anitaStep 1");
         output += lineNumber++;
         output += ". ";
@@ -234,7 +293,7 @@ function tree2anitaStep(
             console.log("tree2anitaStep 2");
             let childResult = tree2anitaStep(children.entries[0].target, lineNumber, idMap, false);
             lineNumber = childResult.lineNumber;
-            if (childResult.ruleApply) {
+            if (childResult.conclusion) {
                 output += "conclusion";
             } else {
                 output += "pre";
@@ -255,10 +314,12 @@ function tree2anitaStep(
             output += child1Result.output;
             output += "} \n"
         } else {
-            console.log("tree2anitaStep unreachable 4");
+            output += " conclusion";
+            output += "\n";
+            console.log("tree2anitaStep 4");
         }
-        return { output, ruleApply: false, lineNumber };
-    } else if (justifications.length == 1 && children.length < 3) { // rule apply
+    } else if (justifications.length == 1) { // rule apply
+        conclusion = true;
         console.log("tree2anitaStep 5");
         output += lineNumber++;
         output += ". ";
@@ -292,30 +353,33 @@ function tree2anitaStep(
             output += "} \n"
         } else if (children.length == 0) { // unsaturated
             console.log("tree2anitaStep 8");
+            output += idMap.get(justifications.entries[0].target.getAttribute("data-jtk-managed"));
+
             output += "\n";
         } else {
             console.log("tree2anitaStep unreachable 9");
         }
-        return { output, ruleApply: true, lineNumber };
-
-
-    } else if (justifications.length == 2 && children.length == 0 && !forking) { // @ contradiction
+    } else {
+        console.log("tree2anitaStep 13"); 
+    }
+    
+    if (closures.length == 1) { // @ contradiction
         console.log("tree2anitaStep 10");
+
         output += lineNumber++;
         output += ". ";
         output += "@ ";
-
-        ///todo
-        output += idMap.get(justifications.entries[0].target.getAttribute("data-jtk-managed"));
+        output += lineNumber-2;
         output += ","
-        output += idMap.get(justifications.entries[1].target.getAttribute("data-jtk-managed"));
-
+        output += idMap.get(closures.entries[0].target.getAttribute("data-jtk-managed"));
         output += "\n";
 
-        return { output, ruleApply: true, lineNumber };
+        return { output, conclusion, lineNumber };
 
     } else {
-        console.log("tree2anitaStep fail", el, lineNumber, idMap, forking);
-        throw "tree2anitaStep fail"; 
+        console.log("tree2anitaStep 11");
+
+        return { output, conclusion: conclusion, lineNumber };
+
     };
 }
