@@ -30,7 +30,8 @@ const dd1 = document.getElementById('dragDropWindow1')!;
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    //TODO paintStyle: { fill: "#00f", width: 50, height:40 },
+    // @ts-ignore
+    paintStyle: { fill: "#00f", width: 50, height:40 },
     source: true,
     target: false,
     scope: "down",
@@ -45,12 +46,13 @@ const sourceEndpoint: EndpointOptions = {
 
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    //TODO paintStyle: { fill: "#00f", width: 50, height: 40 },
+    // @ts-ignore
+    paintStyle: { fill: "#00f", width: 50, height: 40 },
     source: false,
     target: true,
     scope: "down",
     maxConnections: 1,
-    //TODO beforeDrop: myBeforeDrop,
+    beforeDrop: myBeforeDrop,
 
 };
 
@@ -81,7 +83,8 @@ const justificationTargetEndpoint: EndpointOptions = {
     target: true,
     scope: "back",
     maxConnections: -1,
-    //TODO beforeDrop: myBeforeDrop,
+    // @ts-ignore
+    beforeDrop: myBeforeDrop,
 };
 
 
@@ -112,7 +115,8 @@ const closureTargetEndpoint: EndpointOptions = {
     target: true,
     scope: "closure",
     maxConnections: -1,
-    //TODO beforeDrop: myBeforeDrop,
+    // @ts-ignore
+    beforeDrop: myBeforeDrop,
 };
 
 function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
