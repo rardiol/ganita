@@ -1,13 +1,15 @@
-import { loadPyodide } from "../node_modules/pyodide/pyodide.mjs";
+import { loadPyodide } from "pyodide";
 
-async function mainPyodide() {
+async function mainPyodide(indexURL) {
     console.log("mainPyodide");
-    let pyodide = await loadPyodide();
+
+
+    let pyodide = await loadPyodide({ indexURL });    
     console.log("loaded pyodide");
     await pyodide.loadPackage(
         ['https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl',
             'https://files.pythonhosted.org/packages/c0/7c/f66be9e75485ae6901ae77d8bdbc3c0e99ca748ab927b3e18205759bde09/rply-0.7.8-py2.py3-none-any.whl',
-            '../lib/anita-0.1.13-py3-none-any.whl']);
+            './anita-0.1.13-py3-none-any.whl']);
     console.log("loaded packages");
 
     const pyresult = pyodide.runPython(`
@@ -36,17 +38,26 @@ def test(inp):
     console.log(pyresult);
     console.log(typeof pyresult);
 
-
     return pyodide;
 }
 
-let pyodideReadyPromise = mainPyodide();
+let pyodideReadyPromise = null;
 
-self.onmessage = async (event: MessageEvent<{ id: number, msg: string }>) => {
+self.onmessage = async (event) => {
     console.log(event);
     console.log(event.data);
+    if(pyodideReadyPromise === null) {
+        console.log("onmessage mainPyodide");
+        pyodideReadyPromise = mainPyodide(event.data.indexURL);
+        console.log("onmessage mainPyodide return");
+        return;
+    }
+    console.log("onmessage awaiting");
+
     // make sure loading is done
     const pyodide = await pyodideReadyPromise;
+    console.log("onmessage awaited");
+
 
     const { id, msg } = event.data;
 
