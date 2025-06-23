@@ -9,6 +9,7 @@ import Split from "split.js"
 declare global {
     interface Window {
         check: Function;
+        closeWindow: Function;
         j: JsPlumbInstance;
     }
 }
@@ -120,6 +121,7 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
     const newWindow = dragDropWindowTemplate.content.firstElementChild!.cloneNode(true) as HTMLDivElement;
 
     setNewInput(newWindow, windowCounterID);
+    addNewCloseButton(newWindow, windowCounterID);
 
     newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
     newWindow.style.left = current.style.left;
@@ -134,10 +136,24 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
     canvas.appendChild(newWindow);
 }
 
+function addNewCloseButton(el: HTMLElement, windowCounterID: number) {
+    const newInput = el.querySelector("button");
+    newInput.setAttribute("id", "button_close" + windowCounterID);
+    newInput.setAttribute("name", windowCounterID.toString());
+}
+
 function setNewInput(el: HTMLElement, windowCounterID: number) {
     const newInput = el.querySelector("input");
     newInput.setAttribute("id", "input" + windowCounterID);
     newInput.setAttribute("name", windowCounterID.toString());
+}
+
+window.closeWindow = async function closeWindow(event: PointerEvent) {
+    console.log("closeWindow", event);
+    const target = event.target as HTMLElement;
+    window.j.removeAllEndpoints(target.parentElement);
+    window.j.unmanage(target.parentElement);
+    target.parentElement.remove();
 }
 
 window.check = async function check() {
