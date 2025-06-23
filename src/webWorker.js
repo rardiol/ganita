@@ -4,7 +4,7 @@ async function mainPyodide(indexURL) {
     console.log("mainPyodide");
 
 
-    let pyodide = await loadPyodide({ indexURL });    
+    let pyodide = await loadPyodide({ indexURL });
     console.log("loaded pyodide");
     await pyodide.loadPackage(
         ['https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl',
@@ -13,27 +13,17 @@ async function mainPyodide(indexURL) {
     console.log("loaded packages");
 
     const pyresult = pyodide.runPython(`
-
 from pyodide.ffi import to_js
-
-import anita
 
 from anita.anita_en_fo import check_proof
 
-def test2():
-    pass
-
-def test3():
-    print("fooa")
-
-def test(inp):
-    print("test", inp)
+def my_check_proof(inp):
     if inp == "start":
         return to_js("start")
-    return to_js(inp + " FOO")
+    return to_js(check_proof(inp))
 
-4
-  `);
+"ok"
+`);
     console.log("ran pyodide");
     console.log(pyresult);
     console.log(typeof pyresult);
@@ -44,47 +34,32 @@ def test(inp):
 let pyodideReadyPromise = null;
 
 self.onmessage = async (event) => {
-    console.log(event);
-    console.log(event.data);
-    if(pyodideReadyPromise === null) {
+    console.log("onmessage", event, event.data);
+    if (pyodideReadyPromise === null) {
         console.log("onmessage mainPyodide");
         pyodideReadyPromise = mainPyodide(event.data.indexURL);
         console.log("onmessage mainPyodide return");
         return;
     }
-    console.log("onmessage awaiting");
 
     // make sure loading is done
+    console.log("onmessage awaiting");
     const pyodide = await pyodideReadyPromise;
     console.log("onmessage awaited");
 
-
     const { id, msg } = event.data;
-
     const locals = pyodide.toPy({ inp: msg });
-    console.log(locals);
+
     try {
         // Execute the python code in this context
-        console.log("runPythonAsync1 test2 1");
-        console.log(await pyodide.runPythonAsync("test2()", { locals }));
-        console.log("runPythonAsync1 test2 2");
-        console.log("runPythonAsync1 test3 1");
-        console.log(await pyodide.runPythonAsync("test3()", { locals }));
-        console.log("runPythonAsync1 test3 2");
         console.log("runPythonAsync1");
-        const result = await pyodide.runPythonAsync("check_proof(inp)", { locals });
-        console.log(result);
-        console.log(typeof result);
-        console.log("runPythonAsync2");
+        const result = await pyodide.runPythonAsync("my_check_proof(inp)", { locals });
+        console.log("runPythonAsync2", result, typeof result);
         self.postMessage({ result, id });
         console.log("postMessage");
     } catch (error) {
-        console.log("error");
-        console.log(typeof error);
-        console.log(error);
-        console.log("error2");
+        console.log("error", error, typeof error);
         self.postMessage({ error: error.message, id });
         console.log("error3");
-
     }
 };
