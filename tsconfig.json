@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
       "outDir": "./dist/",
-      "noImplicitAny": true,
+      "strict": true,
       "inlineSourceMap": true,        
       "module": "es2020",
-      "target": "es5",
+      "target": "es6",
       "jsx": "react",
       "allowJs": true,
       "esModuleInterop": true,
       "noEmitOnError": false,
-      "moduleResolution": "node"
+      "moduleResolution": "bundler",
     }
   }

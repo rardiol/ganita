@@ -141,13 +141,13 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
 }
 
 function addNewCloseButton(el: HTMLElement, windowCounterID: number) {
-    const newInput = el.querySelector("button");
+    const newInput = el.querySelector("button")!;
     newInput.setAttribute("id", "button_close" + windowCounterID);
     newInput.setAttribute("name", windowCounterID.toString());
 }
 
 function setNewInput(el: HTMLElement, windowCounterID: number) {
-    const newInput = el.querySelector("input");
+    const newInput = el.querySelector("input")!;
     newInput.setAttribute("id", "input" + windowCounterID);
     newInput.setAttribute("name", windowCounterID.toString());
 }
@@ -157,7 +157,7 @@ window.closeWindow = async function closeWindow(event: PointerEvent) {
     const target = event.target as HTMLElement;
     window.j.removeAllEndpoints(target.parentElement);
     window.j.unmanage(target.parentElement);
-    target.parentElement.remove();
+    target.parentElement!.remove();
 }
 
 window.check = async function check() {
@@ -195,7 +195,8 @@ function tree2anitaStep(
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
     const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
 
-    idMap.set(el.getAttribute("data-jtk-managed"), lineNumber);
+    const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => {throw "Failed to find data-jtk-managed"})());
+    idMap.set(data_jtk_managed, lineNumber);
 
     console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications, closures);
 
