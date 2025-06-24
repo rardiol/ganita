@@ -2,6 +2,7 @@ import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstan
 import { BezierConnector } from "@jsplumb/connector-bezier";
 import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
+import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 
 declare global {
     interface Window {
