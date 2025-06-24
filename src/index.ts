@@ -14,7 +14,7 @@ declare global {
 
 const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { type: "module" });
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
-console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location.origin}/pyodide` }));
+console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
 
 let windowCounterID = 0;
 
