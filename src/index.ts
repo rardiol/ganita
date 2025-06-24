@@ -246,8 +246,18 @@ function tree2anitaStep(
             output += childResult.output;
         } else if (children.length == 2) {
             console.log("tree2anitaStep 3");
-            let child0Result = tree2anitaStep(children.get(0).target, lineNumber, idMap, true);
-            let child1Result = tree2anitaStep(children.get(1).target, child0Result.lineNumber, idMap, true);
+
+            let child0Result;
+            let child1Result;
+
+            if (parseInt(children.get(0).target.style.left, 10) < parseInt(children.get(1).target.style.left, 10)) {
+                child0Result = tree2anitaStep(children.get(0).target, lineNumber, idMap, true);
+                child1Result = tree2anitaStep(children.get(1).target, child0Result.lineNumber, idMap, true);
+            } else {
+                child0Result = tree2anitaStep(children.get(1).target, lineNumber, idMap, true);
+                child1Result = tree2anitaStep(children.get(0).target, child0Result.lineNumber, idMap, true);
+            }
+
             lineNumber = child1Result.lineNumber;
 
             output += " conclusion";
@@ -284,8 +294,17 @@ function tree2anitaStep(
             output += childResult.output;
         } else if (children.length == 2) {
             console.log("tree2anitaStep 7");
-            let child0Result = tree2anitaStep(children.get(0).target, lineNumber, idMap, true);
-            let child1Result = tree2anitaStep(children.get(1).target, child0Result.lineNumber, idMap, true);
+            let child0Result;
+            let child1Result;
+
+            if (parseInt(children.get(0).target.style.left, 10) < parseInt(children.get(1).target.style.left, 10)) {
+                child0Result = tree2anitaStep(children.get(0).target, lineNumber, idMap, true);
+                child1Result = tree2anitaStep(children.get(1).target, child0Result.lineNumber, idMap, true);
+            } else {
+                child0Result = tree2anitaStep(children.get(1).target, lineNumber, idMap, true);
+                child1Result = tree2anitaStep(children.get(0).target, child0Result.lineNumber, idMap, true);
+            }
+
             lineNumber = child1Result.lineNumber;
 
             output += idMap.get(justifications.get(0).target.getAttribute("data-jtk-managed"));
