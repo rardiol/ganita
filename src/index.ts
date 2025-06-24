@@ -15,7 +15,7 @@ const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { t
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
 console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location.origin}/pyodide` }));
 
-var windowCounterID = 0;
+let windowCounterID = 0;
 
 const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
 const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
@@ -27,7 +27,7 @@ const dd1 = document.getElementById('dragDropWindow1')!;
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    // @ts-ignore
+    // @ts-expect-error
     paintStyle: { fill: "#00f", width: 50, height: 40 },
     source: true,
     target: false,
@@ -43,7 +43,7 @@ const sourceEndpoint: EndpointOptions = {
 
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
-    // @ts-ignore
+    // @ts-expect-error
     paintStyle: { fill: "#00f", width: 50, height: 40 },
     source: false,
     target: true,
@@ -80,7 +80,7 @@ const justificationTargetEndpoint: EndpointOptions = {
     target: true,
     scope: "back",
     maxConnections: -1,
-    // @ts-ignore
+    // @ts-expect-error
     beforeDrop: myBeforeDrop,
 };
 
@@ -112,7 +112,7 @@ const closureTargetEndpoint: EndpointOptions = {
     target: true,
     scope: "closure",
     maxConnections: -1,
-    // @ts-ignore
+    // @ts-expect-error
     beforeDrop: myBeforeDrop,
 };
 
@@ -127,12 +127,12 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
     newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
     newWindow.style.left = current.style.left;
 
-    var endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
-    var endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
-    var endpointJustificationTarget = instance.addEndpoint(newWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);
-    var endpointJustificationSource = instance.addEndpoint(newWindow, { anchor: "TopLeft" }, justificationSourceEndpoint);
-    var endpointClosureTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, closureTargetEndpoint);
-    var endpointClosureSource = instance.addEndpoint(newWindow, { anchor: "TopRight" }, closureSourceEndpoint);
+    const _endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
+    const _endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
+    const _endpointJustificationTarget = instance.addEndpoint(newWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+    const _endpointJustificationSource = instance.addEndpoint(newWindow, { anchor: "TopLeft" }, justificationSourceEndpoint);
+    const _endpointClosureTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, closureTargetEndpoint);
+    const _endpointClosureSource = instance.addEndpoint(newWindow, { anchor: "TopRight" }, closureSourceEndpoint);
 
     canvas.appendChild(newWindow);
 }
@@ -159,7 +159,7 @@ window.closeWindow = async function closeWindow(event: PointerEvent) {
 
 window.check = async function check() {
     console.log("check");
-    let anitaInput = tree2anita();
+    const anitaInput = tree2anita();
 
     anitaInputArea.innerText = anitaInput;
 
@@ -232,7 +232,7 @@ function tree2anitaStep(
 
         if (children.length == 1) {
             console.log("tree2anitaStep 2");
-            let childResult = tree2anitaStep(children.get(0).target, lineNumber, idMap, false);
+            const childResult = tree2anitaStep(children.get(0).target, lineNumber, idMap, false);
             lineNumber = childResult.lineNumber;
             if (childResult.conclusion) {
                 output += "conclusion";
@@ -282,7 +282,7 @@ function tree2anitaStep(
 
         if (children.length == 1) {
             console.log("tree2anitaStep 6");
-            let childResult = tree2anitaStep(children.get(0).target, lineNumber, idMap, false);
+            const childResult = tree2anitaStep(children.get(0).target, lineNumber, idMap, false);
             lineNumber = childResult.lineNumber;
 
             output += idMap.get(justifications.get(0).target.getAttribute("data-jtk-managed"));
@@ -346,7 +346,7 @@ function tree2anitaStep(
 
 function getPromiseAndResolve(): { promise: Promise<unknown>; resolve: any; } {
     let resolve;
-    let promise = new Promise((res) => {
+    const promise = new Promise((res) => {
         resolve = res;
     });
     return { promise, resolve };
@@ -432,7 +432,7 @@ function myBeforeDrop(params: BeforeDropParams) {
 
 jsPlumbReady(function () {
 
-    var instance = window.j = jsPlumbNewInstance({
+    const instance = window.j = jsPlumbNewInstance({
         dragOptions: { cursor: 'pointer', zIndex: 2000 },
         container: canvas,
         connectionOverlays: [
@@ -451,9 +451,9 @@ jsPlumbReady(function () {
         dd1.style.left = "50px";
         dd1.style.top = "50px";
 
-        var e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
-        var e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
-        var e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
+        const e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
+        const e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+        const e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
 
 
         createNewWindow(dd1, instance);
