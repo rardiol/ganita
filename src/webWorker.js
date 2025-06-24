@@ -1,9 +1,10 @@
 import { loadPyodide } from "pyodide";
 
-async function mainPyodide(indexURL) {
-    console.log("mainPyodide");
+async function mainPyodide(windowLocationIndex) {
+    console.log("mainPyodide", location, windowLocationIndex);
 
-
+    const indexURL = new URL("./pyodide", location);
+    console.log("indexURL", indexURL);
     let pyodide = await loadPyodide({ indexURL });
     console.log("loaded pyodide");
     await pyodide.loadPackage(
