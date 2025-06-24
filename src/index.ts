@@ -1,10 +1,7 @@
-//import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, StateMachineConnector } from "../node_modules/@jsplumb/browser-ui/js/jsplumb.browser-ui.es.js";
 import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector, BeforeDropParams } from "@jsplumb/browser-ui"
+import { BezierConnector } from "@jsplumb/connector-bezier";
+import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
-
-//import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier/connector-bezier.js";
-//import { BezierConnector } from "../node_modules/@jsplumb/connector-bezier//js/jsplumb.connector-bezier.es.js";
-//import { FlowchartConnector } from "../node_modules/@jsplumb/connector-flowchart/connector-flowchart.js";
 
 declare global {
     interface Window {
@@ -16,7 +13,7 @@ declare global {
 
 const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { type: "module" });
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
-console.log("sending indexURL", pyodideWorker.postMessage({indexURL: `${window.location.origin}/pyodide`}));
+console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location.origin}/pyodide` }));
 
 var windowCounterID = 0;
 
@@ -31,7 +28,7 @@ const dd1 = document.getElementById('dragDropWindow1')!;
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-ignore
-    paintStyle: { fill: "#00f", width: 50, height:40 },
+    paintStyle: { fill: "#00f", width: 50, height: 40 },
     source: true,
     target: false,
     scope: "down",
@@ -57,8 +54,8 @@ const targetEndpoint: EndpointOptions = {
 };
 
 const justificationSourceEndpoint: EndpointOptions = {
-    endpoint: {type:"Dot", options:{ radius: 20 }},
-    paintStyle: { fill: "#0F0"},
+    endpoint: { type: "Dot", options: { radius: 20 } },
+    paintStyle: { fill: "#0F0" },
     source: true,
     target: false,
     scope: "back",
@@ -71,14 +68,14 @@ const justificationSourceEndpoint: EndpointOptions = {
     },
     connector: {
         type: StateMachineConnector.type,
-        options: {curviness: 40}
+        options: { curviness: 40 }
     }
 
 };
 
 const justificationTargetEndpoint: EndpointOptions = {
-    endpoint: {type:"Dot", options:{ radius: 20 }},
-    paintStyle: { fill: "#080"},
+    endpoint: { type: "Dot", options: { radius: 20 } },
+    paintStyle: { fill: "#080" },
     source: false,
     target: true,
     scope: "back",
@@ -89,8 +86,8 @@ const justificationTargetEndpoint: EndpointOptions = {
 
 
 const closureSourceEndpoint: EndpointOptions = {
-    endpoint: {type:"Dot", options:{ radius: 20 }},
-    paintStyle: { fill: "#F00"},
+    endpoint: { type: "Dot", options: { radius: 20 } },
+    paintStyle: { fill: "#F00" },
     source: true,
     target: false,
     scope: "closure",
@@ -103,14 +100,14 @@ const closureSourceEndpoint: EndpointOptions = {
     },
     connector: {
         type: StateMachineConnector.type,
-        options: {curviness: 40}
+        options: { curviness: 40 }
     }
 
 };
 
 const closureTargetEndpoint: EndpointOptions = {
-    endpoint: {type:"Dot", options:{ radius: 20 }},
-    paintStyle: { fill: "#800"},
+    endpoint: { type: "Dot", options: { radius: 20 } },
+    paintStyle: { fill: "#800" },
     source: false,
     target: true,
     scope: "closure",
@@ -195,7 +192,7 @@ function tree2anitaStep(
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
     const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
 
-    const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => {throw "Failed to find data-jtk-managed"})());
+    const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => { throw "Failed to find data-jtk-managed" })());
     idMap.set(data_jtk_managed, lineNumber);
 
     console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications, closures);
@@ -216,10 +213,10 @@ function tree2anitaStep(
     X   2           1               1           fail
     */
 
-    if(justifications.length == 0 && forking) {
+    if (justifications.length == 0 && forking) {
         throw "Cannot fork without justification";
     }
-    if(children.length > 0 && closures.length > 0) {
+    if (children.length > 0 && closures.length > 0) {
         throw "Cannot have children on a closed tree"
     }
 
@@ -323,16 +320,16 @@ function tree2anitaStep(
             console.log("tree2anitaStep unreachable 9");
         }
     } else {
-        console.log("tree2anitaStep 13"); 
+        console.log("tree2anitaStep 13");
     }
-    
+
     if (closures.length == 1) { // @ contradiction
         console.log("tree2anitaStep 10");
 
         output += lineNumber++;
         output += ". ";
         output += "@ ";
-        output += lineNumber-2;
+        output += lineNumber - 2;
         output += ","
         output += idMap.get(closures.get(0).target.getAttribute("data-jtk-managed"));
         output += "\n";
@@ -350,21 +347,21 @@ function tree2anitaStep(
 function getPromiseAndResolve(): { promise: Promise<unknown>; resolve: any; } {
     let resolve;
     let promise = new Promise((res) => {
-      resolve = res;
+        resolve = res;
     });
     return { promise, resolve };
-  }
-  
-  // Each message needs a unique id to identify the response. In a real example,
-  // we might use a real uuid package
-  let lastId = 1;
-  function getId() {
+}
+
+// Each message needs a unique id to identify the response. In a real example,
+// we might use a real uuid package
+let lastId = 1;
+function getId() {
     return lastId++;
-  }
-  
-  // Add an id to msg, send it to worker, then wait for a response with the same id.
-  // When we get such a response, use it to resolve the promise.
-  function requestResponse(worker: Worker, msg: string): Promise<string> {
+}
+
+// Add an id to msg, send it to worker, then wait for a response with the same id.
+// When we get such a response, use it to resolve the promise.
+function requestResponse(worker: Worker, msg: string): Promise<string> {
     console.log("requestResponse", worker, msg);
 
     const { promise, resolve } = getPromiseAndResolve();
@@ -374,21 +371,21 @@ function getPromiseAndResolve(): { promise: Promise<unknown>; resolve: any; } {
         console.log(event);
         console.log(event.data);
 
-      if (event.data?.id !== idWorker) {
-        console.log("requestResponse addEventListener return?");
+        if (event.data?.id !== idWorker) {
+            console.log("requestResponse addEventListener return?");
 
-        return;
-      }
-      console.log("requestResponse addEventListener returno");
+            return;
+        }
+        console.log("requestResponse addEventListener returno");
 
-      // This listener is done so remove it.
-      worker.removeEventListener("message", listener);
-      // Filter the id out of the result
-      const { id, result } = event.data;
-      console.log("requestResponse resolve");
+        // This listener is done so remove it.
+        worker.removeEventListener("message", listener);
+        // Filter the id out of the result
+        const { id, result } = event.data;
+        console.log("requestResponse resolve");
 
-      resolve(result);
-      console.log("requestResponse resolve2");
+        resolve(result);
+        console.log("requestResponse resolve2");
 
     });
     console.log("requestResponse postMessage");
@@ -397,86 +394,86 @@ function getPromiseAndResolve(): { promise: Promise<unknown>; resolve: any; } {
     console.log("requestResponse return");
 
     return promise as Promise<string>;
-  }
-  
-  
-  function asyncRun(inp: string): Promise<string> {
+}
+
+
+function asyncRun(inp: string): Promise<string> {
     console.log("asyncRun");
     return requestResponse(pyodideWorker, inp);
-  }
-  
-
-  console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div'], {sizes: [60, 20, 20]}));
-
-  console.log("readying");
-  checkButton.disabled = true;
-  asyncRun("start").then(function (result) {
-      console.log("ready");
-      checkButton.disabled = false;
-      checkButton.innerText = "Check";
-  })
-  console.log("readying2");
-  
-  function myBeforeDrop(params: BeforeDropParams) {
-      console.log("myBeforeDrop", params);
-          if (params.sourceId == params.targetId) {
-              console.log("block selfconnection");
-              return false;
-          }
-      
-          if (window.j.select({ source: params.sourceId, target: params.targetId, scope: [params.scope] }).length >= 1) {
-              console.log("block doubleconnect");
-              return false;
-          }
-      
-          return true;
-      }    
+}
 
 
-      jsPlumbReady(function () {
+console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div'], { sizes: [60, 20, 20] }));
 
-        var instance = window.j = jsPlumbNewInstance({
-            dragOptions: { cursor: 'pointer', zIndex: 2000 },
-            container: canvas,
-            connectionOverlays: [
-                {
-                    type: "Arrow",
-                    options: { location: 1 }
-                }
-            ]
+console.log("readying");
+checkButton.disabled = true;
+asyncRun("start").then(function (result) {
+    console.log("ready");
+    checkButton.disabled = false;
+    checkButton.innerText = "Check";
+})
+console.log("readying2");
+
+function myBeforeDrop(params: BeforeDropParams) {
+    console.log("myBeforeDrop", params);
+    if (params.sourceId == params.targetId) {
+        console.log("block selfconnection");
+        return false;
+    }
+
+    if (window.j.select({ source: params.sourceId, target: params.targetId, scope: [params.scope] }).length >= 1) {
+        console.log("block doubleconnect");
+        return false;
+    }
+
+    return true;
+}
+
+
+jsPlumbReady(function () {
+
+    var instance = window.j = jsPlumbNewInstance({
+        dragOptions: { cursor: 'pointer', zIndex: 2000 },
+        container: canvas,
+        connectionOverlays: [
+            {
+                type: "Arrow",
+                options: { location: 1 }
+            }
+        ]
+    });
+
+    // suspend drawing and initialise.
+    instance.batch(function () {
+
+        setNewInput(dd1, windowCounterID);
+
+        dd1.style.left = "50px";
+        dd1.style.top = "50px";
+
+        var e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
+        var e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+        var e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
+
+
+        createNewWindow(dd1, instance);
+        instance.bind("connection", function (info, originalEvent) {
+            console.log("connection");
+            //createNewWindow(info.target, instance);
         });
-    
-        // suspend drawing and initialise.
-        instance.batch(function () {
-    
-            setNewInput(dd1, windowCounterID);
-    
-            dd1.style.left = "50px";
-            dd1.style.top = "50px";
-    
-            var e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
-            var e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
-            var e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
-    
-    
-            createNewWindow(dd1, instance);
-            instance.bind("connection", function (info, originalEvent) {
-                console.log("connection");
-                //createNewWindow(info.target, instance);
-            });
-    
-            instance.bind("endpoint:dblclick", function (info, originalEvent) {
-                console.log("edbl");
-                console.log(info);
-                createNewWindow(info.element, instance);
-            });
-    
-            instance.bind("beforeDrag", function (params) {
-                console.log("foo1");
-                console.log(params);
-                return true;
-    
-            });
-    
+
+        instance.bind("endpoint:dblclick", function (info, originalEvent) {
+            console.log("edbl");
+            console.log(info);
+            createNewWindow(info.element, instance);
         });
-    });      
+
+        instance.bind("beforeDrag", function (params) {
+            console.log("foo1");
+            console.log(params);
+            return true;
+
+        });
+
+    });
+});      
