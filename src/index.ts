@@ -16,6 +16,10 @@ const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { t
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
 console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
 
+const sheet = new CSSStyleSheet();
+document.adoptedStyleSheets.push(sheet);
+resetCSSEndpointFocus();
+
 let windowCounterID = 0;
 
 const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
@@ -40,6 +44,7 @@ const sourceEndpoint: EndpointOptions = {
         stroke: "#00f",
         dashstyle: "2 2"
     },
+    cssClass: "down source",
 };
 
 const targetEndpoint: EndpointOptions = {
@@ -51,7 +56,7 @@ const targetEndpoint: EndpointOptions = {
     scope: "down",
     maxConnections: 1,
     beforeDrop: myBeforeDrop,
-
+    cssClass: "down target",
 };
 
 const justificationSourceEndpoint: EndpointOptions = {
@@ -70,8 +75,8 @@ const justificationSourceEndpoint: EndpointOptions = {
     connector: {
         type: StateMachineConnector.type,
         options: { curviness: 40 }
-    }
-
+    },
+    cssClass: "back source",
 };
 
 const justificationTargetEndpoint: EndpointOptions = {
@@ -83,12 +88,13 @@ const justificationTargetEndpoint: EndpointOptions = {
     maxConnections: -1,
     // @ts-expect-error
     beforeDrop: myBeforeDrop,
+    cssClass: "back target",
 };
 
 
 const closureSourceEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
-    paintStyle: { fill: "#F00" },
+    paintStyle: { fill: "#111" },
     source: true,
     target: false,
     scope: "closure",
@@ -96,25 +102,26 @@ const closureSourceEndpoint: EndpointOptions = {
     maxConnections: 1,
     connectorStyle: {
         strokeWidth: 5,
-        stroke: "#F00",
+        stroke: "#111",
         dashstyle: "2 2"
     },
     connector: {
         type: StateMachineConnector.type,
         options: { curviness: 40 }
-    }
-
+    },
+    cssClass: "closure source",
 };
 
 const closureTargetEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
-    paintStyle: { fill: "#800" },
+    paintStyle: { fill: "#444" },
     source: false,
     target: true,
     scope: "closure",
     maxConnections: -1,
     // @ts-expect-error
     beforeDrop: myBeforeDrop,
+    cssClass: "closure target",
 };
 
 function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
@@ -424,6 +431,28 @@ function myBeforeDrop(params: BeforeDropParams) {
     return true;
 }
 
+function resetCSSEndpointFocus() {
+    console.log(sheet);
+
+    sheet.replaceSync(`
+        .source { }
+        .target { opacity: 0.4 }
+        .down { }
+        .back { }
+        .closure { }
+    `);
+    console.log(sheet);
+}
+
+function setCSSEndpointFocus(scope: string) {
+    sheet.replaceSync(`
+        .jtk-endpoint { opacity: 0.3; }
+        .${scope}.target { 
+            opacity: 1;
+            border: solid red;
+        }
+    `);
+}
 
 jsPlumbReady(function () {
 
@@ -452,23 +481,51 @@ jsPlumbReady(function () {
 
 
         createNewWindow(dd1, instance);
+
+
         instance.bind("connection", function (info, originalEvent) {
-            console.log("connection");
+            console.log("connection", info, originalEvent);
             //createNewWindow(info.target, instance);
+            resetCSSEndpointFocus();
         });
 
         instance.bind("endpoint:dblclick", function (info, originalEvent) {
-            console.log("edbl");
-            console.log(info);
+            console.log("edbl", info);
             createNewWindow(info.element, instance);
         });
 
-        instance.bind("beforeDrag", function (params) {
-            console.log("foo1");
-            console.log(params);
+        instance.bind("beforeDrag", function (params, originalEvent) {
+            console.log("beforeDrag", params, originalEvent);
             return true;
-
         });
 
+        instance.bind("drag:start", function (params) {
+            console.log("drag:start", params);
+            return true;
+        });
+
+        instance.bind("connection:drag", function (params) {
+            console.log("connection:drag", params);
+            setCSSEndpointFocus(params.scope);
+            return true;
+        });
+
+        instance.bind("connection:abort", function (params) {
+            console.log("connection:abort", params);
+            resetCSSEndpointFocus();
+            return true;
+        });
+
+        instance.bind("connection:move", function (params) {
+            console.log("connection:move", params);
+            resetCSSEndpointFocus();
+            return true;
+        });
+
+        instance.bind("connection:detach", function (params) {
+            console.log("connection:detach", params);
+            resetCSSEndpointFocus();
+            return true;
+        });
     });
 });      
