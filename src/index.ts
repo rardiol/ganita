@@ -421,12 +421,6 @@ function myBeforeDrop(params: BeforeDropParams) {
         console.log("block selfconnection");
         return false;
     }
-
-    if (window.j.select({ source: params.sourceId, target: params.targetId, scope: [params.scope] }).length >= 1) {
-        console.log("block doubleconnect");
-        return false;
-    }
-
     return true;
 }
 
