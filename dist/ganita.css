@@ -412,3 +412,7 @@ path, .jtk-endpoint { cursor:pointer; }
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.jtk-drag-active {
+    border: solid red;
+}

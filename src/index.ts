@@ -464,7 +464,6 @@ function setCSSEndpointFocus(scope: string) {
         .jtk-endpoint { opacity: 0.3; }
         .${scope}.target { 
             opacity: 1;
-            border: solid red;
         }
     `);
 }
