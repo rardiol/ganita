@@ -74,7 +74,11 @@ const justificationSourceEndpoint: EndpointOptions = {
     },
     connector: {
         type: StateMachineConnector.type,
-        options: { curviness: 40 }
+        options: {
+            margin: 15,
+            curviness: 60,
+            proximityLimit: 120,
+        }
     },
     cssClass: "back source",
 };
@@ -107,7 +111,11 @@ const closureSourceEndpoint: EndpointOptions = {
     },
     connector: {
         type: StateMachineConnector.type,
-        options: { curviness: 40 }
+        options: {
+            margin: 15,
+            curviness: 60,
+            proximityLimit: 120,
+        }
     },
     cssClass: "closure source",
 };
