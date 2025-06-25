@@ -1,4 +1,4 @@
-import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector, BeforeDropParams } from "@jsplumb/browser-ui"
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector, BeforeDropParams, Connection, Endpoint } from "@jsplumb/browser-ui"
 import { BezierConnector } from "@jsplumb/connector-bezier";
 import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
@@ -132,7 +132,7 @@ const closureTargetEndpoint: EndpointOptions = {
     cssClass: "closure target",
 };
 
-function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
+function createNewWindow(current: HTMLElement, instance: JsPlumbInstance, lateralOffset?: boolean): HTMLDivElement {
     windowCounterID += 1;
 
     const newWindow = dragDropWindowTemplate.content.firstElementChild!.cloneNode(true) as HTMLDivElement;
@@ -141,7 +141,7 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
     addNewCloseButton(newWindow, windowCounterID);
 
     newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
-    newWindow.style.left = current.style.left;
+    newWindow.style.left = parseInt(current.style.left, 10) + (lateralOffset ? 220 : 0) + "px";
 
     const _endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
     const _endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
@@ -151,6 +151,8 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance) {
     const _endpointClosureSource = instance.addEndpoint(newWindow, { anchor: "TopRight" }, closureSourceEndpoint);
 
     canvas.appendChild(newWindow);
+
+    return newWindow;
 }
 
 function addNewCloseButton(el: HTMLElement, windowCounterID: number) {
@@ -165,12 +167,17 @@ function setNewInput(el: HTMLElement, windowCounterID: number) {
     newInput.setAttribute("name", windowCounterID.toString());
 }
 
-window.closeWindow = async function closeWindow(event: PointerEvent) {
+function closeWindow2(target: HTMLElement) {
+    console.log("closeWindow2", target);
+    window.j.removeAllEndpoints(target);
+    window.j.unmanage(target);
+    target.remove();
+}
+
+const closeWindow = window.closeWindow = async function closeWindow(event: PointerEvent) {
     console.log("closeWindow", event);
-    const target = event.target as HTMLElement;
-    window.j.removeAllEndpoints(target.parentElement);
-    window.j.unmanage(target.parentElement);
-    target.parentElement!.remove();
+    const target = (event.target as HTMLElement).parentElement!;
+    closeWindow2(target);
 }
 
 window.check = async function check() {
@@ -462,6 +469,26 @@ function setCSSEndpointFocus(scope: string) {
     `);
 }
 
+let temporaryWindow: HTMLDivElement | null = null;
+
+function cleanTemporaryWindow() {
+    console.log("cleanTemporaryWindow", temporaryWindow);
+    if (
+        !temporaryWindow
+    ) {
+        return;
+    }
+    if (
+        window.j.select({ source: temporaryWindow.getAttribute("data-jtk-managed") }).length != 0 ||
+        window.j.select({ target: temporaryWindow.getAttribute("data-jtk-managed") }).length != 0 ||
+        (temporaryWindow.querySelector("input.formularinp") as HTMLInputElement).value != ""
+    ) {
+        return;
+    }
+
+    closeWindow2(temporaryWindow);
+}
+
 jsPlumbReady(function () {
 
     const instance = window.j = jsPlumbNewInstance({
@@ -487,52 +514,69 @@ jsPlumbReady(function () {
         const e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
         const e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
 
-
-        createNewWindow(dd1, instance);
-
-
-        instance.bind("connection", function (info, originalEvent) {
-            console.log("connection", info, originalEvent);
+        instance.bind("connection", function (params, originalEvent) {
+            console.log("connection", params, originalEvent);
             //createNewWindow(info.target, instance);
             resetCSSEndpointFocus();
+            cleanTemporaryWindow();
         });
 
-        instance.bind("endpoint:dblclick", function (info, originalEvent) {
-            console.log("edbl", info);
-            createNewWindow(info.element, instance);
+        instance.bind("endpoint:dblclick", function (params, originalEvent) {
+            console.log("edbl", params);
+            createNewWindow(params.element, instance);
         });
 
         instance.bind("beforeDrag", function (params, originalEvent) {
             console.log("beforeDrag", params, originalEvent);
+            const endpoint: Endpoint = params.endpoint;
+            if (endpoint.scope == "down" && endpoint.isSource && endpoint.connections.length < 2) {
+                temporaryWindow = createNewWindow(params.source, instance, endpoint.connections.length == 1);
+                instance.repaintEverything();
+                console.log("new temporaryWindow", temporaryWindow);
+            }
             return true;
         });
 
-        instance.bind("drag:start", function (params) {
-            console.log("drag:start", params);
+        instance.bind("beforeStartDetach", function (params, originalEvent) {
+            console.log("beforeStartDetach", params, originalEvent);
+            const endpoint: Endpoint = params.endpoint;
+            if (endpoint.scope == "down" && endpoint.isSource && endpoint.connections.length < 2) {
+                temporaryWindow = createNewWindow(params.source, instance, endpoint.connections.length == 1);
+                instance.repaintEverything();
+                console.log("new temporaryWindow", temporaryWindow);
+            }
             return true;
         });
 
-        instance.bind("connection:drag", function (params) {
-            console.log("connection:drag", params);
+        instance.bind("drag:start", function (params, originalEvent) {
+            console.log("drag:start", params, originalEvent);
+            return true;
+        });
+
+        instance.bind("connection:drag", function (params: Connection, originalEvent) {
+            console.log("connection:drag", params, originalEvent);
             setCSSEndpointFocus(params.scope);
             return true;
         });
 
-        instance.bind("connection:abort", function (params) {
-            console.log("connection:abort", params);
+        instance.bind("connection:abort", function (params, originalEvent) {
+            console.log("connection:abort", params, originalEvent);
             resetCSSEndpointFocus();
+            cleanTemporaryWindow();
             return true;
         });
 
-        instance.bind("connection:move", function (params) {
-            console.log("connection:move", params);
+        instance.bind("connection:move", function (params, originalEvent) {
+            console.log("connection:move", params, originalEvent);
             resetCSSEndpointFocus();
+            cleanTemporaryWindow();
             return true;
         });
 
-        instance.bind("connection:detach", function (params) {
-            console.log("connection:detach", params);
+        instance.bind("connection:detach", function (params, originalEvent) {
+            console.log("connection:detach", params, originalEvent);
             resetCSSEndpointFocus();
+            cleanTemporaryWindow();
             return true;
         });
     });
