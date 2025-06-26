@@ -9,6 +9,7 @@ module.exports = {
     plugins: [new PyodidePlugin()],
     devServer: {
         static: './dist',
+        hot: false,
     },
     module: {
         rules: [
