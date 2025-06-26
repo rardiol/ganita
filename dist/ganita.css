@@ -358,10 +358,6 @@ path {
 
 path, .jtk-endpoint { cursor:pointer; }
 
-[jtk-not-draggable] {
-    border:2px solid darkorange !important;
-}
-
 .outputp {
     border: solid;
 }
@@ -384,8 +380,6 @@ path, .jtk-endpoint { cursor:pointer; }
 .gutter.gutter-vertical {
     cursor: row-resize;
 }
-
-
 
 .gutter.gutter-vertical {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
@@ -413,6 +407,19 @@ path, .jtk-endpoint { cursor:pointer; }
     overflow-x: hidden;
 }
 
+[jtk-not-draggable] {
+    border:2px solid darkorange !important;
+}
+
 .jtk-drag-active {
     border: solid red;
+    opacity: 1;
+}
+
+.jtk-endpoint-full {
+    opacity: 0.4;
+}
+
+.jtk-endpoint-drop-allowed {
+    border: solid green;
 }
