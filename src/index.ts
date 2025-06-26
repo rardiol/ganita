@@ -458,6 +458,7 @@ function cleanTemporaryWindow() {
         window.j.select({ target: temporaryWindow.getAttribute("data-jtk-managed") }).length != 0 ||
         (temporaryWindow.querySelector("input.formularinp") as HTMLInputElement).value != ""
     ) {
+        temporaryWindow = null;
         return;
     }
 
