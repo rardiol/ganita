@@ -6,6 +6,7 @@ import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 
 declare global {
     interface Window {
+        reset: Function;
         check: Function;
         closeWindow: Function;
         j: JsPlumbInstance;
@@ -194,6 +195,18 @@ window.check = async function check(params: PointerEvent) {
     }
     anitaOutputArea.innerText = anitaOutput;
 }
+
+window.reset = async function reset(params: PointerEvent) {
+    if(!window.confirm("Tem certeza que deseja resetar a árvore?")){
+        return;
+    }
+
+    for (let el of document.querySelectorAll(".window.child")) {
+        closeWindow2(el as HTMLElement);
+    }
+
+    resetRootWindow();
+};
 
 function tree2anita(): string {
     return tree2anitaStep(rootWindow, 1, new Map(), false).output;
@@ -455,6 +468,12 @@ function cleanTemporaryWindow() {
     closeWindow2(temporaryWindow);
 }
 
+function resetRootWindow() {
+    (rootWindow.querySelector("input.formularinp") as HTMLInputElement).value = "";
+    rootWindow.style.left = "50px";
+    rootWindow.style.top = "50px";
+}
+
 function jsPlumbReadyFunction() {
 
     const instance = window.j = jsPlumbNewInstance({
@@ -473,8 +492,7 @@ function jsPlumbReadyFunction() {
 
         setNewInput(rootWindow, windowCounterID);
 
-        rootWindow.style.left = "50px";
-        rootWindow.style.top = "50px";
+        resetRootWindow();
 
         const e1 = instance.addEndpoint(rootWindow, { anchor: "Bottom" }, sourceEndpoint);
         const e2 = instance.addEndpoint(rootWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);

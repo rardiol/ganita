@@ -46,6 +46,7 @@
 
     <div>
         <button id="checkbtn" onclick="check()" disabled>Check ⏳</button>
+        <button id="resetbtn" onclick="reset()">Reset</button>
         <input type="checkbox" id="showhelp" name="showhelp" checked />
         <label for="showhelp">Ajuda</label>
         <input type="checkbox" id="justifications_check" name="justifications" checked />
@@ -54,10 +55,9 @@
         <label for="showhelp">Fechos</label>
     </div>
 
-
     <div>
-
         <div id="canvas_div" class="split">
+
             <h2>Tableau Analítico</h2>
 
             <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas">
@@ -67,7 +67,7 @@
                     <span class="line_number"></span>
                 </div>
                 <template id="dragDropWindowTemplate">
-                    <div class="window">
+                    <div class="window child">
                         <input type="text" required size="14" class="formularinp">
                         </input>
                         <div>
@@ -94,6 +94,7 @@
                 Clique em "Check"
             </p>
         </div>
+        
     </div>
 
 
