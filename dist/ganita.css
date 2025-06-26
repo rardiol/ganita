@@ -453,3 +453,10 @@ td {
 table {
     border-collapse: collapse;
 }
+
+.line_number:not(:empty) {
+    border:solid black;
+    border-width: 1px;
+    padding: 2px;
+    margin: 5px;
+}

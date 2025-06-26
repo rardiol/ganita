@@ -64,16 +64,20 @@
                 <div class="window root" id="dragDropWindow1">
                     <input type="text" required size="14" class="formularinp">
                     </input>
-                    <span class="line_number"></span>
+                    <div>
+                        <span class="line_number"></span>
+                        <button class="closebtn" disabled>Root
+                        </button>
+                    </div>
                 </div>
                 <template id="dragDropWindowTemplate">
                     <div class="window child">
                         <input type="text" required size="14" class="formularinp">
                         </input>
                         <div>
+                            <span class="line_number"></span>
                             <button class="closebtn" onclick="closeWindow(event)">Close
                             </button>
-                            <span class="line_number"></span>
                         </div>
                     </div>
 
@@ -94,7 +98,7 @@
                 Clique em "Check"
             </p>
         </div>
-        
+
     </div>
 
 
