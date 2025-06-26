@@ -40,6 +40,7 @@ const sourceEndpoint: EndpointOptions = {
         strokeWidth: 5,
         stroke: "#111",
     },
+    beforeDrop: myBeforeDrop,
     cssClass: "down source",
 };
 
@@ -77,6 +78,8 @@ const justificationSourceEndpoint: EndpointOptions = {
             proximityLimit: 120,
         }
     },
+    // @ts-expect-error
+    beforeDrop: myBeforeDrop,
     cssClass: "back source",
 };
 
@@ -91,7 +94,6 @@ const justificationTargetEndpoint: EndpointOptions = {
     beforeDrop: myBeforeDrop,
     cssClass: "back target",
 };
-
 
 const closureSourceEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
@@ -116,6 +118,8 @@ const closureSourceEndpoint: EndpointOptions = {
         }
     },
     cssClass: "closure source",
+    // @ts-expect-error
+    beforeDrop: myBeforeDrop,
 };
 
 const closureTargetEndpoint: EndpointOptions = {
