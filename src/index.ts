@@ -180,8 +180,15 @@ const closeWindow = window.closeWindow = async function closeWindow(event: Point
 
 window.check = async function check(params: PointerEvent) {
     console.log("check");
-    const anitaInput = tree2anita();
-
+    let anitaInput;
+    try {
+        anitaInput = tree2anita();
+    } catch (error: any) {
+        console.log("Error", error);
+        anitaInputArea.innerText = error.toString();
+        return;
+    }
+    
     anitaInputArea.innerText = anitaInput;
 
     let anitaOutput: string;
@@ -225,7 +232,7 @@ function tree2anitaStep(
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
     const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
 
-    const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => { throw "Failed to find data-jtk-managed" })());
+    const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => { throw new Error("Failed to find data-jtk-managed") })());
     idMap.set(data_jtk_managed, lineNumber);
     (el.querySelector(".line_number") as HTMLSpanElement).textContent = lineNumber + ".";
 
@@ -248,10 +255,10 @@ function tree2anitaStep(
     */
 
     if (justifications.length == 0 && forking) {
-        throw "Cannot fork without justification";
+        throw new Error (`Cannot fork without justification on line ${lineNumber}`);
     }
     if (children.length > 0 && closures.length > 0) {
-        throw "Cannot have children on a closed tree"
+        throw new Error (`Cannot have children on a closed tree on line ${lineNumber}`);
     }
 
     if (justifications.length == 0) { // pre or conclusion
@@ -470,8 +477,8 @@ function cleanTemporaryWindow() {
 
 function resetRootWindow() {
     (rootWindow.querySelector("input.formularinp") as HTMLInputElement).value = "";
-    rootWindow.style.left = "51px";
-    rootWindow.style.top = "520px";
+    rootWindow.style.left = "50px";
+    rootWindow.style.top = "50px";
 }
 
 function jsPlumbReadyFunction() {
