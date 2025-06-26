@@ -197,7 +197,7 @@ window.check = async function check(params: PointerEvent) {
 }
 
 window.reset = async function reset(params: PointerEvent) {
-    if(!window.confirm("Tem certeza que deseja resetar a árvore?")){
+    if (!window.confirm("Tem certeza que deseja resetar a árvore?")) {
         return;
     }
 
@@ -470,8 +470,8 @@ function cleanTemporaryWindow() {
 
 function resetRootWindow() {
     (rootWindow.querySelector("input.formularinp") as HTMLInputElement).value = "";
-    rootWindow.style.left = "50px";
-    rootWindow.style.top = "50px";
+    rootWindow.style.left = "51px";
+    rootWindow.style.top = "520px";
 }
 
 function jsPlumbReadyFunction() {
