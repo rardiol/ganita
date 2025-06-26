@@ -35,10 +35,11 @@ const sourceEndpoint: EndpointOptions = {
     scope: "down",
     connectionsDirected: true,
     maxConnections: 2,
+    connectorClass: "down",
     connectorStyle: {
         strokeWidth: 5,
         stroke: "#00f",
-        dashstyle: "2 2"
+        dashstyle: "2 2", 
     },
     cssClass: "down source",
 };
@@ -61,6 +62,7 @@ const justificationSourceEndpoint: EndpointOptions = {
     source: true,
     target: false,
     scope: "back",
+    connectorClass: "back",
     connectionsDirected: true,
     maxConnections: 1,
     connectorStyle: {
@@ -98,6 +100,7 @@ const closureSourceEndpoint: EndpointOptions = {
     source: true,
     target: false,
     scope: "closure",
+    connectorClass: "closure",
     connectionsDirected: true,
     maxConnections: 1,
     connectorStyle: {
