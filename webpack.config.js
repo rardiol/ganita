@@ -7,6 +7,9 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     plugins: [new PyodidePlugin()],
+    devServer: {
+        static: './dist',
+    },
     module: {
         rules: [
             {
