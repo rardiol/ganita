@@ -16,10 +16,6 @@ const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { t
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
 console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
 
-const sheet = new CSSStyleSheet();
-document.adoptedStyleSheets.push(sheet);
-resetCSSEndpointFocus();
-
 let windowCounterID = 0;
 
 const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
@@ -446,28 +442,6 @@ function myBeforeDrop(params: BeforeDropParams) {
     return true;
 }
 
-function resetCSSEndpointFocus() {
-    console.log(sheet);
-
-    sheet.replaceSync(`
-        .source { }
-        .target { opacity: 0.4 }
-        .down { }
-        .back { }
-        .closure { }
-    `);
-    console.log(sheet);
-}
-
-function setCSSEndpointFocus(scope: string) {
-    sheet.replaceSync(`
-        .jtk-endpoint { opacity: 0.3; }
-        .${scope}.target { 
-            opacity: 1;
-        }
-    `);
-}
-
 let temporaryWindow: HTMLDivElement | null = null;
 
 function cleanTemporaryWindow() {
@@ -515,8 +489,6 @@ jsPlumbReady(function () {
 
         instance.bind("connection", function (params, originalEvent) {
             console.log("connection", params, originalEvent);
-            //createNewWindow(info.target, instance);
-            resetCSSEndpointFocus();
             cleanTemporaryWindow();
         });
 
@@ -554,27 +526,23 @@ jsPlumbReady(function () {
 
         instance.bind("connection:drag", function (params: Connection, originalEvent) {
             console.log("connection:drag", params, originalEvent);
-            setCSSEndpointFocus(params.scope);
             return true;
         });
 
         instance.bind("connection:abort", function (params, originalEvent) {
             console.log("connection:abort", params, originalEvent);
-            resetCSSEndpointFocus();
             cleanTemporaryWindow();
             return true;
         });
 
         instance.bind("connection:move", function (params, originalEvent) {
             console.log("connection:move", params, originalEvent);
-            resetCSSEndpointFocus();
             cleanTemporaryWindow();
             return true;
         });
 
         instance.bind("connection:detach", function (params, originalEvent) {
             console.log("connection:detach", params, originalEvent);
-            resetCSSEndpointFocus();
             cleanTemporaryWindow();
             return true;
         });
