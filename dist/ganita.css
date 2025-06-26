@@ -439,3 +439,17 @@ h1:has(+ div + div > #showhelp:not(:checked)) {
 :root:has(#closures_check:not(:checked)) .closure {
     visibility: hidden;
 }
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding-inline: 4px;
+}
+
+td {
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+}
