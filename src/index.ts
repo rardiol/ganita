@@ -174,7 +174,7 @@ function closeWindow2(target: HTMLElement) {
 
 const closeWindow = window.closeWindow = async function closeWindow(event: PointerEvent) {
     console.log("closeWindow", event);
-    const target = (event.target as HTMLElement).parentElement!;
+    const target = (event.target as HTMLElement).parentElement?.parentElement!;
     closeWindow2(target);
 }
 
@@ -188,7 +188,7 @@ window.check = async function check(params: PointerEvent) {
         anitaInputArea.innerText = error.toString();
         return;
     }
-    
+
     anitaInputArea.innerText = anitaInput;
 
     let anitaOutput: string;
@@ -255,10 +255,10 @@ function tree2anitaStep(
     */
 
     if (justifications.length == 0 && forking) {
-        throw new Error (`Cannot fork without justification on line ${lineNumber}`);
+        throw new Error(`Cannot fork without justification on line ${lineNumber}`);
     }
     if (children.length > 0 && closures.length > 0) {
-        throw new Error (`Cannot have children on a closed tree on line ${lineNumber}`);
+        throw new Error(`Cannot have children on a closed tree on line ${lineNumber}`);
     }
 
     if (justifications.length == 0) { // pre or conclusion
