@@ -13,11 +13,9 @@
 </head>
 
 <body>
-    <div class="jtk-demo-main">
-        <h1>GANITA</h1>
+    <h1>GANITA</h1>
 
-
-        <p id="description">
+    <div id="description">
         <ul>
             <li>Desenhe o Tableau Analítico </li>
             <li>Duplo clique na barra azul inferior para adicionar novos nós</li>
@@ -26,46 +24,55 @@
             <li>Verde: Justificativa da aplicação da regra</li>
             <li>Preto: Fecho/contradição</li>
         </ul>
-        </p>
+    </div>
+
+    <div>
         <button id="checkbtn" onclick="check()" disabled>Check ⏳</button>
+        <input type="checkbox" id="showhelp" name="showhelp" checked />
+        <label for="showhelp">Ajuda</label>
+        <input type="checkbox" id="justifications_check" name="justifications" checked />
+        <label for="showhelp">Justificativas</label>
+        <input type="checkbox" id="closures_check" name="closures" checked />
+        <label for="showhelp">Fechos</label>
+    </div>
 
-        <div>
 
-            <div id="canvas_div" class="split">
-                <h2>Tableau Analítico</h2>
+    <div>
 
-                <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas">
-                    <div class="window root" id="dragDropWindow1">
+        <div id="canvas_div" class="split">
+            <h2>Tableau Analítico</h2>
+
+            <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas">
+                <div class="window root" id="dragDropWindow1">
+                    <input type="text" required size="14" class="formularinp">
+                    </input>
+                </div>
+                <template id="dragDropWindowTemplate">
+                    <div class="window">
                         <input type="text" required size="14" class="formularinp">
                         </input>
+                        <button class="closebtn" onclick="closeWindow(event)">Close
+                        </button>
                     </div>
-                    <template id="dragDropWindowTemplate">
-                        <div class="window">
-                            <input type="text" required size="14" class="formularinp">
-                            </input>
-                            <button class="closebtn" onclick="closeWindow(event)">Close
-                            </button>
-                        </div>
-                    </template>
-                </div>
-            </div>
-
-            <div id="anita_input_div" class="split">
-                <h2>Entrada ANITA (a la Fitch)</h2>
-                <p id="anita_input" class="outputp">
-                    Clique em "Check"
-                </p>
-            </div>
-
-            <div id="anita_out_div" class="split">
-                <h2>Output ANITA</h2>
-                <p id="anita_out" class="outputp">
-                    Clique em "Check"
-                </p>
+                </template>
             </div>
         </div>
 
+        <div id="anita_input_div" class="split">
+            <h2>Entrada ANITA (a la Fitch)</h2>
+            <p id="anita_input" class="outputp">
+                Clique em "Check"
+            </p>
+        </div>
+
+        <div id="anita_out_div" class="split">
+            <h2>Output ANITA</h2>
+            <p id="anita_out" class="outputp">
+                Clique em "Check"
+            </p>
+        </div>
     </div>
+
 
     <script type="module" src="index.bundle.js"></script>
 
