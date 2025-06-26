@@ -420,7 +420,7 @@ path,
 }
 
 .jtk-endpoint-full {
-    opacity: 0.4;
+    opacity: 0.2;
 }
 
 .jtk-endpoint-drop-allowed {
@@ -455,7 +455,7 @@ table {
 }
 
 .line_number:not(:empty) {
-    border:solid black;
+    border: solid black;
     border-width: 1px;
     padding: 2px;
     margin: 5px;
