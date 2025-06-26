@@ -64,14 +64,19 @@
                 <div class="window root" id="dragDropWindow1">
                     <input type="text" required size="14" class="formularinp">
                     </input>
+                    <span class="line_number"></span>
                 </div>
                 <template id="dragDropWindowTemplate">
                     <div class="window">
                         <input type="text" required size="14" class="formularinp">
                         </input>
-                        <button class="closebtn" onclick="closeWindow(event)">Close
-                        </button>
+                        <div>
+                            <button class="closebtn" onclick="closeWindow(event)">Close
+                            </button>
+                            <span class="line_number"></span>
+                        </div>
                     </div>
+
                 </template>
             </div>
         </div>

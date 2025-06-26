@@ -219,6 +219,7 @@ function tree2anitaStep(
 
     const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => { throw "Failed to find data-jtk-managed" })());
     idMap.set(data_jtk_managed, lineNumber);
+    (el.querySelector(".line_number") as HTMLSpanElement).textContent = lineNumber + ".";
 
     console.log("tree2anitaStep", el, lineNumber, idMap, forking, children, justifications, closures);
 
@@ -350,6 +351,8 @@ function tree2anitaStep(
 
     if (closures.length == 1) { // @ contradiction
         console.log("tree2anitaStep 10");
+
+        (el.querySelector(".line_number") as HTMLSpanElement).textContent += ", " + lineNumber.toString() + ".";
 
         output += lineNumber++;
         output += ". ";
