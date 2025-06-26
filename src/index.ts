@@ -29,7 +29,7 @@ const dd1 = document.getElementById('dragDropWindow1')!;
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { fill: "#00f", width: 50, height: 40 },
+    paintStyle: { fill: "#111", width: 50, height: 40 },
     source: true,
     target: false,
     scope: "down",
@@ -38,8 +38,7 @@ const sourceEndpoint: EndpointOptions = {
     connectorClass: "down",
     connectorStyle: {
         strokeWidth: 5,
-        stroke: "#00f",
-        dashstyle: "2 2", 
+        stroke: "#111",
     },
     cssClass: "down source",
 };
@@ -47,7 +46,7 @@ const sourceEndpoint: EndpointOptions = {
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { fill: "#00f", width: 50, height: 40 },
+    paintStyle: { fill: "#333", width: 50, height: 40 },
     source: false,
     target: true,
     scope: "down",
@@ -83,7 +82,7 @@ const justificationSourceEndpoint: EndpointOptions = {
 
 const justificationTargetEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
-    paintStyle: { fill: "#080" },
+    paintStyle: { fill: "#5F5" },
     source: false,
     target: true,
     scope: "back",
@@ -96,7 +95,7 @@ const justificationTargetEndpoint: EndpointOptions = {
 
 const closureSourceEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
-    paintStyle: { fill: "#111" },
+    paintStyle: { fill: "#00F" },
     source: true,
     target: false,
     scope: "closure",
@@ -105,7 +104,7 @@ const closureSourceEndpoint: EndpointOptions = {
     maxConnections: 1,
     connectorStyle: {
         strokeWidth: 5,
-        stroke: "#111",
+        stroke: "#00F",
         dashstyle: "2 2"
     },
     connector: {
@@ -121,7 +120,7 @@ const closureSourceEndpoint: EndpointOptions = {
 
 const closureTargetEndpoint: EndpointOptions = {
     endpoint: { type: "Dot", options: { radius: 20 } },
-    paintStyle: { fill: "#444" },
+    paintStyle: { fill: "#55F" },
     source: false,
     target: true,
     scope: "closure",
