@@ -217,6 +217,9 @@ window.reset = async function reset(params: PointerEvent) {
 };
 
 function tree2anita(): string {
+    for (const el of document.querySelectorAll(".line_number")) {
+        el.textContent = "";
+    }
     return tree2anitaStep(rootWindow, 1, new Map(), false).output;
 }
 
