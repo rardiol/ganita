@@ -12,10 +12,6 @@ declare global {
     }
 }
 
-const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { type: "module" });
-console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
-console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
-
 let windowCounterID = 0;
 
 const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
@@ -23,8 +19,7 @@ const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("temp
 const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
 const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
 const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
-const dd1 = document.getElementById('dragDropWindow1')!;
-
+const rootWindow = document.getElementById('dragDropWindow1')!;
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
@@ -182,7 +177,7 @@ const closeWindow = window.closeWindow = async function closeWindow(event: Point
     closeWindow2(target);
 }
 
-window.check = async function check() {
+window.check = async function check(params: PointerEvent) {
     console.log("check");
     const anitaInput = tree2anita();
 
@@ -201,7 +196,7 @@ window.check = async function check() {
 }
 
 function tree2anita(): string {
-    return tree2anitaStep(dd1, 1, new Map(), false).output;
+    return tree2anitaStep(rootWindow, 1, new Map(), false).output;
 }
 
 function tree2anitaStep(
@@ -430,18 +425,6 @@ function asyncRun(inp: string): Promise<string> {
     return requestResponse(pyodideWorker, inp);
 }
 
-
-console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div'], { sizes: [60, 20, 20] }));
-
-console.log("readying");
-checkButton.disabled = true;
-asyncRun("start").then(function (result) {
-    console.log("ready");
-    checkButton.disabled = false;
-    checkButton.innerText = "Check";
-})
-console.log("readying2");
-
 function myBeforeDrop(params: BeforeDropParams) {
     console.log("myBeforeDrop", params);
     if (params.sourceId == params.targetId) {
@@ -472,7 +455,7 @@ function cleanTemporaryWindow() {
     closeWindow2(temporaryWindow);
 }
 
-jsPlumbReady(function () {
+function jsPlumbReadyFunction() {
 
     const instance = window.j = jsPlumbNewInstance({
         dragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -488,14 +471,14 @@ jsPlumbReady(function () {
     // suspend drawing and initialise.
     instance.batch(function () {
 
-        setNewInput(dd1, windowCounterID);
+        setNewInput(rootWindow, windowCounterID);
 
-        dd1.style.left = "50px";
-        dd1.style.top = "50px";
+        rootWindow.style.left = "50px";
+        rootWindow.style.top = "50px";
 
-        const e1 = instance.addEndpoint(dd1, { anchor: "Bottom" }, sourceEndpoint);
-        const e2 = instance.addEndpoint(dd1, { anchor: "BottomLeft" }, justificationTargetEndpoint);
-        const e3 = instance.addEndpoint(dd1, { anchor: "BottomRight" }, closureTargetEndpoint);
+        const e1 = instance.addEndpoint(rootWindow, { anchor: "Bottom" }, sourceEndpoint);
+        const e2 = instance.addEndpoint(rootWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);
+        const e3 = instance.addEndpoint(rootWindow, { anchor: "BottomRight" }, closureTargetEndpoint);
 
         instance.bind("connection", function (params, originalEvent) {
             console.log("connection", params, originalEvent);
@@ -557,4 +540,21 @@ jsPlumbReady(function () {
             return true;
         });
     });
-});      
+}
+
+const pyodideWorker = new Worker(new URL('./webWorker.js', import.meta.url), { type: "module" });
+console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
+console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
+
+console.log(Split(['#canvas_div', '#anita_input_div', '#anita_out_div'], { sizes: [60, 20, 20] }));
+
+console.log("readying");
+checkButton.disabled = true;
+asyncRun("start").then(function (result) {
+    console.log("ready");
+    checkButton.disabled = false;
+    checkButton.innerText = "Check";
+})
+console.log("readying2");
+
+jsPlumbReady(jsPlumbReadyFunction);
