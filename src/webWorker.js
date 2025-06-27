@@ -16,7 +16,7 @@ async function mainPyodide(windowLocationIndex) {
     const pyresult = pyodide.runPython(`
 from pyodide.ffi import to_js
 
-from anita.anita_en_fo import check_proof
+from anita.anita_pt_fo import check_proof
 
 def my_check_proof(inp):
     if inp == "start":
