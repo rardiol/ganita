@@ -464,3 +464,16 @@ table {
 #anita_out_div {
     border-bottom: solid darkgray;
 }
+
+.formularinp:invalid {
+    background-color: lightcoral;
+}
+
+.formularinp:placeholder-shown {
+    background-color: rgb(255, 224, 166);
+    font-style: italic;
+}
+
+.formularinp:valid {
+    background-color: white;
+}
