@@ -490,3 +490,7 @@ table {
 .error {
     color: lightcoral
 }
+
+.overleaf_textarea {
+    display: none;
+}

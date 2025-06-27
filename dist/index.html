@@ -109,19 +109,33 @@
 
                 <div id="anita_out_div" class="anita_inout_div">
                     <h2>Saída Latex ANITA</h2>
-                    <h3>Sem color <button class="copylatex" onclick="copy_latex(event)">Copiar</button></h3>
-                    <p id="anita_out_latex" class="outputp latex">
-                        Clique em "Checar"
-                    </p>
-                    <h3>Colorida <button class="copylatex" onclick="copy_colored_latex(event)">Copiar</button></h3>
-                    <p id="anita_out_colored_latex" class="outputp latex">
-                        Clique em "Checar"
-                    </p>
+
+                    <form id="overleaf_form" action="https://www.overleaf.com/docs" method="post" target="_blank">
+                        <h3>Sem cor <button type="button" class="latex_button" onclick="copy_latex(event)"
+                                disabled>Copiar</button> <button type="submit" class="latex_button" disabled>Abrir no
+                                Overleaf</button></h3>
+                        <p id="anita_out_latex" class="outputp latex">
+                            Clique em "Checar"
+                        </p>
+                        <textarea id="overleaf_form_textarea" class="overleaf_textarea" name="snip" readonly></textarea>
+                    </form>
+
+                    <form id="overleaf_form" action="https://www.overleaf.com/docs" method="post" target="_blank">
+                        <h3>Colorida <button type="button" class="latex_button" onclick="copy_colored_latex(event)"
+                                disabled>Copiar</button><button type="submit" class="latex_button" disabled>Abrir no
+                                Overleaf</button></h3>
+                        <p id="anita_out_colored_latex" class="outputp latex">
+                            Clique em "Checar"
+                        </p>
+                        <textarea id="overleaf_colored_form_textarea" class="overleaf_textarea" name="snip" readonly></textarea>
+                    </form>
+
                 </div>
             </div>
         </div>
 
     </div>
+
 
     <script type="module" src="index.bundle.js"></script>
 
