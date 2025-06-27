@@ -39,7 +39,8 @@ body {
 
 .jtk-demo-canvas {
     height: 1500px;
-    border: 1px solid #CCC;
+    border: solid darkgray;
+    border-right: none;
     background-color: white;
     display: flex;
     position: relative;
@@ -457,12 +458,13 @@ table {
     margin: 5px;
 }
 
-.anita_inout_div {
-    border-top: solid darkgray;
+#anita_inout2 {
+    border-right: solid darkgray;
+    border-bottom: solid darkgray;
 }
 
-#anita_out_div {
-    border-bottom: solid darkgray;
+.anita_inout_div {
+    border-top: solid darkgray;
 }
 
 .formularinp:invalid {
