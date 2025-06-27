@@ -153,7 +153,7 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance, latera
     addNewCloseButton(newWindow, windowCounterID);
 
     newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
-    newWindow.style.left = parseInt(current.style.left, 10) + (lateralOffset ? 220 : 0) + "px";
+    newWindow.style.left = parseInt(current.style.left, 10) + (lateralOffset ? 310 : 0) + "px";
 
     canvas.appendChild(newWindow);
 

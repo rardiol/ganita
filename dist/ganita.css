@@ -303,7 +303,7 @@ path {
     position: absolute;
     color: black;
     padding-top: 5px;
-    width: 140px;
+    width: 230px;
     height: 50px;
     line-height: 12px;
     -webkit-transition: -webkit-box-shadow 0.15s ease-in;
@@ -463,6 +463,11 @@ table {
 .anita_inout_div {
     border-top: solid darkgray;
     padding: 8px;
+}
+
+.formularinp {
+    width: 85%;
+    text-align: center;
 }
 
 .formularinp:invalid {
