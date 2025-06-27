@@ -279,10 +279,10 @@ function tree2anitaStep(
     */
 
     if (justifications.length == 0 && forking) {
-        throw new Error(`Cannot fork without justification on line ${lineNumber}`);
+        throw new Error(`É necessário uma justificativa para a bifurcação no nó ${lineNumber}`);
     }
     if (children.length > 0 && closures.length > 0) {
-        throw new Error(`Cannot have children on a closed tree on line ${lineNumber}`);
+        throw new Error(`Não é permitido um fecho ter filhos no nó ${lineNumber}`);
     }
 
     if (justifications.length == 0) { // pre or conclusion
@@ -300,7 +300,7 @@ function tree2anitaStep(
             const childResult = tree2anitaStep(children.get(0).target, lineNumber, idMap, false);
             lineNumber = childResult.lineNumber;
             if (childResult.conclusion) {
-                output += "conclusion";
+                output += "conclusao";
             } else {
                 output += "pre";
             }
@@ -322,7 +322,7 @@ function tree2anitaStep(
 
             lineNumber = child1Result.lineNumber;
 
-            output += " conclusion";
+            output += " conclusao";
 
             output += "\n";
             output += child0Result.output;
@@ -330,7 +330,7 @@ function tree2anitaStep(
             output += child1Result.output;
             output += "} \n"
         } else {
-            output += " conclusion";
+            output += " conclusao";
             output += "\n";
             console.log("tree2anitaStep 4");
         }
@@ -602,7 +602,7 @@ checkButton.disabled = true;
 asyncRun("start").then(function (result) {
     console.log("ready");
     checkButton.disabled = false;
-    checkButton.innerText = "Check";
+    checkButton.innerText = "Checar";
 })
 console.log("readying2");
 
