@@ -255,6 +255,7 @@ function tree2anitaStep(
     const children = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["down"] });
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
     const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
+    const line_type = el.querySelector(".line_type") as HTMLSpanElement;
 
     const data_jtk_managed = (el.getAttribute("data-jtk-managed") || (() => { throw new Error("Failed to find data-jtk-managed") })());
     idMap.set(data_jtk_managed, lineNumber);
@@ -301,8 +302,10 @@ function tree2anitaStep(
             lineNumber = childResult.lineNumber;
             if (childResult.conclusion) {
                 output += "conclusao";
+                line_type.textContent = "conclusão";
             } else {
                 output += "pre";
+                line_type.textContent = "premissa";
             }
             output += "\n";
             output += childResult.output;
@@ -323,6 +326,7 @@ function tree2anitaStep(
             lineNumber = child1Result.lineNumber;
 
             output += " conclusao";
+            line_type.textContent = "conclusão";
 
             output += "\n";
             output += child0Result.output;
@@ -330,6 +334,7 @@ function tree2anitaStep(
             output += child1Result.output;
             output += "} \n"
         } else {
+            line_type.textContent = "conclusão"
             output += " conclusao";
             output += "\n";
             console.log("tree2anitaStep 4");
@@ -344,6 +349,8 @@ function tree2anitaStep(
         }
         output += (el.querySelector("input.formularinp") as HTMLInputElement).value;
         output += " ";
+
+        line_type.textContent = "regra";
 
         if (children.length == 1) {
             console.log("tree2anitaStep 6");
@@ -392,6 +399,7 @@ function tree2anitaStep(
         console.log("tree2anitaStep 10");
 
         (el.querySelector(".line_number") as HTMLSpanElement).textContent += ", " + lineNumber.toString() + ".";
+        line_type.textContent += ", fecho";
 
         output += lineNumber++;
         output += ". ";
