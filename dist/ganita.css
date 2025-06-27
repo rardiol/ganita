@@ -446,11 +446,13 @@ table {
     border-collapse: collapse;
 }
 
-.line_number:not(:empty) {
+.line_number:not(:empty),
+.line_type:not(:empty) {
     border: solid black;
     border-width: 1px;
     padding: 2px;
     margin: 5px;
+    font-size: small;
 }
 
 #anita_inout2 {
