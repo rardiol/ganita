@@ -509,6 +509,8 @@ function cleanTemporaryWindow() {
 
 function resetRootWindow() {
     (rootWindow.querySelector("input.formularinp") as HTMLInputElement).value = "";
+    (rootWindow.querySelector(".line_number") as HTMLElement).innerText = "";
+    (rootWindow.querySelector(".line_type") as HTMLElement).innerText = "";
     rootWindow.style.left = "50px";
     rootWindow.style.top = "50px";
 }
