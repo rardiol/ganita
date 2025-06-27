@@ -62,35 +62,30 @@
     </div>
 
     <div>
-        <div id="canvas_div" class="split">
-
-            <h2>Tableau Analítico</h2>
-
-            <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan" id="canvas">
-                <div class="window root" id="dragDropWindow1">
+        <div class="jtk-demo-canvas canvas-wide drag-drop-demo jtk-surface jtk-surface-nopan split" id="canvas">
+            <div class="window root" id="dragDropWindow1">
+                <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
+                    pattern="[TF] *[^\s]+.*">
+                </input>
+                <div>
+                    <span class="line_number"></span>
+                    <button class="closebtn" disabled>Root
+                    </button>
+                </div>
+            </div>
+            <template id="dragDropWindowTemplate">
+                <div class="window child">
                     <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
                         pattern="[TF] *[^\s]+.*">
                     </input>
                     <div>
                         <span class="line_number"></span>
-                        <button class="closebtn" disabled>Root
+                        <button class="closebtn" onclick="closeWindow(event)">Close
                         </button>
                     </div>
                 </div>
-                <template id="dragDropWindowTemplate">
-                    <div class="window child">
-                        <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
-                            pattern="[TF] *[^\s]+.*">
-                        </input>
-                        <div>
-                            <span class="line_number"></span>
-                            <button class="closebtn" onclick="closeWindow(event)">Close
-                            </button>
-                        </div>
-                    </div>
 
-                </template>
-            </div>
+            </template>
         </div>
 
         <div class="split" id="anita_inout">
