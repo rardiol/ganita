@@ -9,6 +9,8 @@ declare global {
         reset: Function;
         check: Function;
         closeWindow: Function;
+        copy_latex: Function;
+        copy_colored_latex: Function
         j: JsPlumbInstance;
     }
 }
@@ -19,6 +21,8 @@ const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
 const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
 const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
 const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
+const anitaOutputColoredLatexArea: HTMLParagraphElement = document.querySelector("p#anita_out_colored_latex")!;
+const anitaOutputLatexArea: HTMLParagraphElement = document.querySelector("p#anita_out_latex")!;
 const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
 const rootWindow = document.getElementById('dragDropWindow1')!;
 
@@ -198,6 +202,25 @@ const closeWindow = window.closeWindow = async function closeWindow(event: Point
     closeWindow2(target);
 }
 
+async function setClipboard(text: string) {
+    const type = "text/plain";
+    const clipboardItemData = {
+        [type]: text,
+    };
+    const clipboardItem = new ClipboardItem(clipboardItemData);
+    await navigator.clipboard.write([clipboardItem]);
+}
+
+const copy_latex = window.copy_latex = async function copy_latex(event: PointerEvent) {
+    console.log("copy_latex", event);
+    await setClipboard(anitaOutputLatexArea.innerText);
+}
+
+const copy_colored_latex = window.copy_colored_latex = async function copy_colored_latex(event: PointerEvent) {
+    console.log("copy_colored_latex", event);
+    await setClipboard(anitaOutputColoredLatexArea.innerText);
+}
+
 window.check = async function check(params: PointerEvent) {
     console.log("check");
     let anitaInput;
@@ -211,16 +234,25 @@ window.check = async function check(params: PointerEvent) {
 
     anitaInputArea.innerText = anitaInput;
 
-    let anitaOutput: string;
+    let anitaMainOutput: string;
+    let latex: string = "";
+    let colored_latex: string = "";
     try {
         console.log("check await");
-        anitaOutput = await asyncRun(anitaInput);
-        console.log(anitaOutput);
-    } catch (err) {
+        const anitaOutput = await asyncRun(anitaInput);
+        anitaMainOutput = anitaOutput[0];
+        const anitaGetProof = anitaOutput[1];
+        latex = anitaGetProof.latex;
+        colored_latex = anitaGetProof.colored_latex;
+        console.log(anitaGetProof);
+        console.log(anitaMainOutput);
+    } catch (err: any) {
         console.log(err);
-        return;
+        anitaMainOutput = err.toString();
     }
-    anitaOutputArea.innerText = anitaOutput;
+    anitaOutputArea.innerText = anitaMainOutput;
+    anitaOutputLatexArea.innerText = latex;
+    anitaOutputColoredLatexArea.innerText = colored_latex;
 }
 
 window.reset = async function reset(params: PointerEvent) {
@@ -436,7 +468,7 @@ function getId() {
 
 // Add an id to msg, send it to worker, then wait for a response with the same id.
 // When we get such a response, use it to resolve the promise.
-function requestResponse(worker: Worker, msg: string): Promise<string> {
+function requestResponse(worker: Worker, msg: string): Promise<[string, any]> {
     console.log("requestResponse", worker, msg);
 
     const { promise, resolve } = getPromiseAndResolve();
@@ -468,11 +500,11 @@ function requestResponse(worker: Worker, msg: string): Promise<string> {
     worker.postMessage({ id: idWorker, msg });
     console.log("requestResponse return");
 
-    return promise as Promise<string>;
+    return promise as Promise<[string, any]>;
 }
 
 
-function asyncRun(inp: string): Promise<string> {
+function asyncRun(inp: string): Promise<[string, any]> {
     console.log("asyncRun");
     return requestResponse(pyodideWorker, inp);
 }
