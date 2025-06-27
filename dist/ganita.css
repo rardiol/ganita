@@ -460,6 +460,7 @@ table {
 
 .anita_inout_div {
     border-top: solid darkgray;
+    padding: 8px;
 }
 
 .formularinp:invalid {
