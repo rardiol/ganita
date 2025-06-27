@@ -130,9 +130,23 @@ const closureTargetEndpoint: EndpointOptions = {
     cssClass: "closure target",
 };
 
+// https://stackoverflow.com/a/35974082 cc-by-sa
+function isCollide(a: Element, b: Element): boolean {
+    var aRect = a.getBoundingClientRect();
+    var bRect = b.getBoundingClientRect();
+
+    return !(
+        ((aRect.top + aRect.height) < (bRect.top)) ||
+        (aRect.top > (bRect.top + bRect.height)) ||
+        ((aRect.left + aRect.width) < bRect.left) ||
+        (aRect.left > (bRect.left + bRect.width))
+    );
+}
+
 function createNewWindow(current: HTMLElement, instance: JsPlumbInstance, lateralOffset?: boolean): HTMLDivElement {
     windowCounterID += 1;
 
+    const otherWindows = Array.from(document.querySelectorAll(".window"));
     const newWindow = dragDropWindowTemplate.content.firstElementChild!.cloneNode(true) as HTMLDivElement;
 
     setNewInput(newWindow, windowCounterID);
@@ -141,14 +155,20 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance, latera
     newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
     newWindow.style.left = parseInt(current.style.left, 10) + (lateralOffset ? 220 : 0) + "px";
 
+    canvas.appendChild(newWindow);
+
+    console.log("createNewWindow", newWindow);
+    while (!otherWindows.every((el) => !isCollide(newWindow, el))) {
+        newWindow.style.top = (parseInt(newWindow.style.top, 10) + 50) + "px";
+        console.log("move", newWindow);
+    }
+
     const _endpointTop = instance.addEndpoint(newWindow, { anchor: "Top" }, targetEndpoint);
     const _endpointBottom = instance.addEndpoint(newWindow, { anchor: "Bottom" }, sourceEndpoint);
     const _endpointJustificationTarget = instance.addEndpoint(newWindow, { anchor: "BottomLeft" }, justificationTargetEndpoint);
     const _endpointJustificationSource = instance.addEndpoint(newWindow, { anchor: "TopLeft" }, justificationSourceEndpoint);
     const _endpointClosureTarget = instance.addEndpoint(newWindow, { anchor: "BottomRight" }, closureTargetEndpoint);
     const _endpointClosureSource = instance.addEndpoint(newWindow, { anchor: "TopRight" }, closureSourceEndpoint);
-
-    canvas.appendChild(newWindow);
 
     return newWindow;
 }
