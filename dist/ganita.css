@@ -41,7 +41,7 @@ body {
     height: 1500px;
     border: solid darkgray;
     border-right: none;
-    background-color: white;
+    background-color: rgb(247, 247, 247);
     display: flex;
     position: relative;
 }
@@ -312,11 +312,6 @@ path {
     transition: box-shadow 0.15s ease-in;
 }
 
-
-#canvas {
-    height: 2000px;
-}
-
 .window:hover {
     border: 1px solid #123456;
     box-shadow: 2px 2px 19px #444;
@@ -478,4 +473,8 @@ table {
 
 .formularinp:valid {
     background-color: white;
+}
+
+.error {
+    color: lightcoral
 }
