@@ -483,6 +483,10 @@ table {
     background-color: white;
 }
 
+.latex {
+    font-family: monospace;
+}
+
 .error {
     color: lightcoral
 }
