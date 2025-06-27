@@ -21,8 +21,10 @@ const canvas: HTMLDivElement = document.querySelector("div#canvas")!;
 const dragDropWindowTemplate: HTMLTemplateElement = document.querySelector("template#dragDropWindowTemplate")!;
 const anitaInputArea: HTMLParagraphElement = document.querySelector("p#anita_input")!;
 const anitaOutputArea: HTMLParagraphElement = document.querySelector("p#anita_out")!;
-const anitaOutputColoredLatexArea: HTMLParagraphElement = document.querySelector("p#anita_out_colored_latex")!;
 const anitaOutputLatexArea: HTMLParagraphElement = document.querySelector("p#anita_out_latex")!;
+const anitaOutputColoredLatexArea: HTMLParagraphElement = document.querySelector("p#anita_out_colored_latex")!;
+const anitaOutputLatexOverleafArea: HTMLTextAreaElement = document.querySelector("#overleaf_form_textarea")!;
+const anitaOutputColoredLatexOverleafArea: HTMLTextAreaElement = document.querySelector("#overleaf_colored_form_textarea")!;
 const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
 const rootWindow = document.getElementById('dragDropWindow1')!;
 
@@ -221,6 +223,21 @@ const copy_colored_latex = window.copy_colored_latex = async function copy_color
     await setClipboard(anitaOutputColoredLatexArea.innerText);
 }
 
+function setLatexContent(text: string, el: HTMLTextAreaElement, color: boolean) {
+    const xcolor = color?"\\usepackage{xcolor}":"";
+    el.textContent = `
+\\documentclass[12pt]{article}
+\\usepackage[english]{babel}
+\\usepackage{amsmath}
+\\usepackage{tikz}
+\\usepackage{qtree}
+${xcolor}
+\\begin{document}
+${text}
+\\end{document}
+`
+}
+
 window.check = async function check(params: PointerEvent) {
     console.log("check");
     let anitaInput;
@@ -235,8 +252,8 @@ window.check = async function check(params: PointerEvent) {
     anitaInputArea.innerText = anitaInput;
 
     let anitaMainOutput: string;
-    let latex: string = "";
-    let colored_latex: string = "";
+    let latex: string = "Erro";
+    let colored_latex: string = "Erro";
     try {
         console.log("check await");
         const anitaOutput = await asyncRun(anitaInput);
@@ -244,9 +261,13 @@ window.check = async function check(params: PointerEvent) {
         const anitaGetProof = anitaOutput[1];
         latex = anitaGetProof.latex;
         colored_latex = anitaGetProof.colored_latex;
+        setLatexContent(latex, anitaOutputLatexOverleafArea, false);
+        setLatexContent(colored_latex, anitaOutputColoredLatexOverleafArea, true);
         console.log(anitaGetProof);
         console.log(anitaMainOutput);
+        document.querySelectorAll(".latex_button").forEach((el) => el.removeAttribute("disabled"));
     } catch (err: any) {
+        document.querySelectorAll(".latex_button").forEach((el) => el.setAttribute("disabled", "true"));
         console.log(err);
         anitaMainOutput = err.toString();
     }
