@@ -2,9 +2,7 @@ const path = require('path');
 const { PyodidePlugin } = require("@pyodide/webpack-plugin");
 
 module.exports = {
-    entry: {
-        index: './src/index.ts',
-    },
+    entry: './src/index.ts',
     devtool: 'inline-source-map',
     plugins: [new PyodidePlugin()],
     devServer: {
@@ -13,6 +11,13 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.py/,
+                type: 'asset/source',
+                generator: {
+                    emit: false,
+                },
+            },
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
