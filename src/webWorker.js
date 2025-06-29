@@ -87,6 +87,9 @@ self.onmessage = async (event) => {
         self.postMessage({ result, id });
         console.log("postMessage");
     } catch (error) {
+        console.log("error");
+        console.log(error);
+        console.log(typeof error);
         console.log("error", error, typeof error);
         self.postMessage({ error: error, id });
         console.log("error3");
