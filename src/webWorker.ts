@@ -1,9 +1,9 @@
 import { loadPyodide } from "pyodide";
 
-async function mainPyodide(windowLocationIndex) {
+async function mainPyodide(windowLocationIndex: string) {
     console.log("mainPyodide", location, windowLocationIndex);
 
-    const indexURL = new URL("./pyodide", location);
+    const indexURL: string = new URL("./pyodide", location.href).toString();
     console.log("indexURL", indexURL);
 
     const packages = ['https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl',
@@ -18,6 +18,7 @@ import js
 from pyodide.ffi import to_js
 
 from anita.anita_pt_fo import check_proof, ParserAnita
+ 
 
 def my_check_proof(inp):
     if inp == "start":
@@ -60,7 +61,7 @@ def my_check_proof(inp):
     return pyodide;
 }
 
-let pyodideReadyPromise = null;
+let pyodideReadyPromise: Promise<any> | null = null;
 
 self.onmessage = async (event) => {
     console.log("onmessage", event, event.data);
