@@ -10,7 +10,7 @@ body {
     font-family: "Lato", sans-serif;
     font-size: 14px;
     font-weight: 400;
-    height: 100%;
+    height: 4000px;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -40,7 +40,6 @@ body {
     font-weight: 400;
     padding: 4px;
     z-index: 10;
-
 }
 
 .jtk-overlay.jtk-hover {
