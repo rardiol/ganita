@@ -1,4 +1,4 @@
-import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector, BeforeDropParams, Connection, Endpoint } from "@jsplumb/browser-ui"
+import { ready as jsPlumbReady, newInstance as jsPlumbNewInstance, JsPlumbInstance, EndpointOptions, StateMachineConnector, BeforeDropParams, Connection, Endpoint, ContainmentType } from "@jsplumb/browser-ui"
 import { BezierConnector } from "@jsplumb/connector-bezier";
 import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
@@ -580,7 +580,7 @@ function resetRootWindow() {
 function jsPlumbReadyFunction() {
 
     const instance = window.j = jsPlumbNewInstance({
-        dragOptions: { cursor: 'pointer', zIndex: 2000 },
+        dragOptions: { cursor: 'pointer', zIndex: 2000, containment: ContainmentType.parentEnclosed },
         container: canvas,
         connectionOverlays: [
             {
