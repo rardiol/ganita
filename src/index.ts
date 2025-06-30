@@ -667,7 +667,7 @@ const pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
 console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
 
-console.log(Split(['#canvas', '#anita_inout'], { sizes: [60, 40], minSize: 20 }));
+console.log(Split(['#leftsplit', '#anita_inout'], { sizes: [60, 40], minSize: 20 }));
 
 console.log("readying");
 checkButton.disabled = true;
