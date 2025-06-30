@@ -67,34 +67,32 @@
     </div>
 
     <div id="mcdiv" class="split">
-        <div id="leftsplit">
-            <div class="jtk-my-canvas jtk-surface" id="canvas">
-                <div class="window root" id="dragDropWindow1">
+        <div class="jtk-my-canvas jtk-surface jtk-surface-nopan" id="canvas">
+            <div class="window root" id="dragDropWindow1">
+                <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
+                    pattern="[TF] *[^\s]+.*">
+                </input>
+                <div>
+                    <span class="line_number"></span>
+                    <button class="closebtn" disabled>Raiz</button>
+                    <span class="line_type"></span>
+                </div>
+            </div>
+            <template id="dragDropWindowTemplate">
+                <div class="window child">
                     <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
                         pattern="[TF] *[^\s]+.*">
                     </input>
                     <div>
                         <span class="line_number"></span>
-                        <button class="closebtn" disabled>Raiz</button>
+                        <button class="closebtn" onclick="closeWindow(event)">Fechar</button>
                         <span class="line_type"></span>
                     </div>
                 </div>
-                <template id="dragDropWindowTemplate">
-                    <div class="window child">
-                        <input type="text" required size="14" class="formularinp" placeholder="Ex: T A->(B&C)..."
-                            pattern="[TF] *[^\s]+.*">
-                        </input>
-                        <div>
-                            <span class="line_number"></span>
-                            <button class="closebtn" onclick="closeWindow(event)">Fechar</button>
-                            <span class="line_type"></span>
-                        </div>
-                    </div>
 
-                </template>
-            </div>
-
+            </template>
         </div>
+
 
         <div id="anita_inout">
             <div id="anita_inout2">
