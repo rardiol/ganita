@@ -580,7 +580,7 @@ function resetRootWindow() {
 function jsPlumbReadyFunction() {
 
     const instance = window.j = jsPlumbNewInstance({
-        dragOptions: { cursor: 'pointer', zIndex: 2000, containment: ContainmentType.parentEnclosed },
+        dragOptions: { zIndex: 2000, containment: ContainmentType.parentEnclosed },
         container: canvas,
         connectionOverlays: [
             {
