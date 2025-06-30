@@ -224,7 +224,7 @@ const copy_colored_latex = window.copy_colored_latex = async function copy_color
 }
 
 function setLatexContent(text: string, el: HTMLTextAreaElement, color: boolean) {
-    const xcolor = color?"\\usepackage{xcolor}":"";
+    const xcolor = color ? "\\usepackage{xcolor}" : "";
     el.textContent = `
 \\documentclass[12pt]{article}
 \\usepackage[english]{babel}
@@ -254,20 +254,26 @@ window.check = async function check(params: PointerEvent) {
     let anitaMainOutput: string;
     let latex: string = "Erro";
     let colored_latex: string = "Erro";
+    resetLatexButtons();
+
     try {
         console.log("check await");
         const anitaOutput = await asyncRun(anitaInput);
-        anitaMainOutput = anitaOutput[0];
-        const anitaGetProof = anitaOutput[1];
-        latex = anitaGetProof.latex;
-        colored_latex = anitaGetProof.colored_latex;
-        setLatexContent(latex, anitaOutputLatexOverleafArea, false);
-        setLatexContent(colored_latex, anitaOutputColoredLatexOverleafArea, true);
-        console.log(anitaGetProof);
-        console.log(anitaMainOutput);
-        document.querySelectorAll(".latex_button").forEach((el) => el.removeAttribute("disabled"));
+        if (typeof anitaOutput === "string") {
+            anitaMainOutput = anitaOutput;
+            console.log(anitaMainOutput);
+        } else {
+            anitaMainOutput = anitaOutput[0];
+            const anitaGetProof = anitaOutput[1];
+            latex = anitaGetProof.latex;
+            colored_latex = anitaGetProof.colored_latex;
+            setLatexContent(latex, anitaOutputLatexOverleafArea, false);
+            setLatexContent(colored_latex, anitaOutputColoredLatexOverleafArea, true);
+            console.log(anitaGetProof);
+            console.log(anitaMainOutput);
+            document.querySelectorAll(".latex_button").forEach((el) => el.removeAttribute("disabled"));
+        }
     } catch (err: any) {
-        document.querySelectorAll(".latex_button").forEach((el) => el.setAttribute("disabled", "true"));
         console.log(err);
         anitaMainOutput = err.toString();
     }
@@ -524,7 +530,6 @@ function requestResponse(worker: Worker, msg: string): Promise<[string, any]> {
     return promise as Promise<[string, any]>;
 }
 
-
 function asyncRun(inp: string): Promise<[string, any]> {
     console.log("asyncRun");
     return requestResponse(pyodideWorker, inp);
@@ -558,6 +563,10 @@ function cleanTemporaryWindow() {
     }
 
     closeWindow2(temporaryWindow);
+}
+
+function resetLatexButtons() {
+    document.querySelectorAll(".latex_button").forEach((el) => (el as HTMLButtonElement).disabled = true);
 }
 
 function resetRootWindow() {
@@ -662,6 +671,7 @@ console.log(Split(['#canvas', '#anita_inout'], { sizes: [60, 40] }));
 
 console.log("readying");
 checkButton.disabled = true;
+resetLatexButtons();
 asyncRun("start").then(function (result) {
     console.log("ready");
     checkButton.disabled = false;
