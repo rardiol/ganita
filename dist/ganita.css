@@ -16,6 +16,7 @@ body {
     background-color: rgb(247, 247, 247);
     display: flex;
     position: relative;
+    min-height: 200px;
 }
 
 .jtk-connector {
@@ -95,7 +96,6 @@ path,
 
 .gutter {
     background-color: #eee;
-
     background-repeat: no-repeat;
     background-position: 50%;
 }
@@ -125,12 +125,16 @@ path,
 .split,
 .gutter.gutter-horizontal {
     float: left;
+}
+
+.split,
+.gutter.gutter-horizontal {
     height: 2000px;
 }
 
 .split {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 [jtk-not-draggable] {
@@ -226,6 +230,6 @@ table {
     display: none;
 }
 
-.down > rect {
-	fill: #6b6b6b;
+.down>rect {
+    fill: #6b6b6b;
 }
