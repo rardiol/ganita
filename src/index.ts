@@ -31,7 +31,7 @@ const rootWindow = document.getElementById('dragDropWindow1')!;
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { fill: "#111", width: 50, height: 40 },
+    paintStyle: { width: 50, height: 40 },
     source: true,
     target: false,
     scope: "down",
@@ -49,7 +49,7 @@ const sourceEndpoint: EndpointOptions = {
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { fill: "#333", width: 50, height: 40 },
+    paintStyle: { width: 50, height: 40 },
     source: false,
     target: true,
     scope: "down",
