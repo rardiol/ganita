@@ -44,7 +44,7 @@ self.onmessage = async (event) => {
     try {
         // Execute the python code in this context
         console.log("runPythonAsync1");
-        const result = await pyodide.runPythonAsync("my_check_proof(inp)", { locals });
+        const result = pyodide.runPython("my_check_proof(inp)", { locals });
         console.log("runPythonAsync2", result, typeof result);
         self.postMessage({ result, id });
         console.log("postMessage");
