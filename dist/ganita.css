@@ -133,10 +133,12 @@ path,
     height: 100%;
 }
 
+/*
 .split {
     overflow-y: auto;
     overflow-x: auto;
 }
+*/
 
 [jtk-not-draggable] {
     border: 2px solid darkorange !important;
@@ -194,6 +196,8 @@ table {
 #anita_inout2 {
     border-right: solid darkgray;
     border-bottom: solid darkgray;
+    position: sticky;
+    top: 0;
 }
 
 .anita_inout_div {
