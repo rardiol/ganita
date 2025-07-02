@@ -158,8 +158,8 @@ function createNewWindow(current: HTMLElement, instance: JsPlumbInstance, latera
     setNewInput(newWindow, windowCounterID);
     addNewCloseButton(newWindow, windowCounterID);
 
-    newWindow.style.top = (parseInt(current.style.top, 10) + 140) + "px";
-    newWindow.style.left = Math.min(parseInt(current.style.left, 10) + (lateralOffset ? 310 : 0), canvas.offsetWidth - 150) + "px";
+    newWindow.style.top = (parseInt(current.style.top, 10) + current.offsetHeight + 90) + "px";
+    newWindow.style.left = Math.min(parseInt(current.style.left, 10) + (lateralOffset ? current.offsetWidth + 60 : 0), canvas.offsetWidth - current.offsetWidth + 20) + "px";
 
     canvas.appendChild(newWindow);
 
