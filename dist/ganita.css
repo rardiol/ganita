@@ -205,6 +205,8 @@ table {
 .window_bottom_div {
     margin: 2px;
     font-size: 0.8em;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #anita_inout2 {
