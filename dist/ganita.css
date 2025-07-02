@@ -194,8 +194,17 @@ table {
     border: solid black;
     border-width: 1px;
     padding: 2px;
-    margin: 5px;
-    font-size: small;
+    margin: 2px;
+}
+
+.closebtn {
+    font-size: inherit;
+    padding: 2px;
+}
+
+.window_bottom_div {
+    margin: 2px;
+    font-size: 0.8em;
 }
 
 #anita_inout2 {
