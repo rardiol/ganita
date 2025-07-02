@@ -1,10 +1,10 @@
 try:
-    import js
-    from pyodide.ffi import to_js
+    import js # type: ignore
+    from pyodide.ffi import to_js # type: ignore
     from anita.anita_pt_fo import check_proof, ParserAnita
-except e:
-    print("failed import", e)
-    raise e
+except e: # type: ignore
+    print("failed import", e) # type: ignore
+    raise e # type: ignore
  
 
 def my_check_proof(inp):
