@@ -100,8 +100,6 @@ path,
 
 .gutter {
     background-color: #eee;
-    background-repeat: no-repeat;
-    background-position: 50%;
 }
 
 .gutter.gutter-horizontal {
@@ -116,8 +114,15 @@ path,
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
 }
 
-.gutter.gutter-horizontal {
+.gutter.gutter-horizontal>div {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    height: 30px;
+    width: 100%;
+    background-repeat: no-repeat;
+    position: sticky;
+    top: 50%;
+    background-position-x: 50%;
+    background-position-y: 0;
 }
 
 .split {
