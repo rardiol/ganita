@@ -293,6 +293,8 @@ window.reset = async function reset(params: PointerEvent) {
 
     resetRootWindow();
     window.j.repaintEverything();
+
+    window.scroll(0, 0);
 };
 
 function tree2anita(): string {
