@@ -313,6 +313,7 @@ function tree2anitaStep(
 
     let output = "";
     let conclusion = false;
+    const thisLineNumber = lineNumber;
     const children = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["down"] });
     const justifications = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["back"] });
     const closures = window.j.select({ source: el.getAttribute("data-jtk-managed"), scope: ["closure"] });
@@ -342,9 +343,6 @@ function tree2anitaStep(
 
     if (justifications.length == 0 && forking) {
         throw new Error(`É necessário uma justificativa para a bifurcação no nó ${lineNumber}`);
-    }
-    if (children.length > 0 && closures.length > 0) {
-        throw new Error(`Não é permitido um fecho ter filhos no nó ${lineNumber}`);
     }
 
     if (justifications.length == 0) { // pre or conclusion
@@ -465,7 +463,7 @@ function tree2anitaStep(
         output += lineNumber++;
         output += ". ";
         output += "@ ";
-        output += lineNumber - 2;
+        output += thisLineNumber;
         output += ","
         output += idMap.get(closures.get(0).target.getAttribute("data-jtk-managed"));
         output += "\n";
