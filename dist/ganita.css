@@ -254,3 +254,12 @@ table {
 .down>rect {
     fill: #6b6b6b;
 }
+
+.helpimg {
+    height: 10em;
+}
+
+.fontetabela {
+    margin: 2px;
+    font-size: smaller;
+}
