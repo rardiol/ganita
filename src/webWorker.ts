@@ -7,8 +7,8 @@ async function mainPyodide(windowLocationIndex: string) {
     const indexURL: string = new URL("./pyodide", location.href).toString();
     console.log("indexURL", indexURL);
 
-    const packages = ['https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl',
-        'https://files.pythonhosted.org/packages/c0/7c/f66be9e75485ae6901ae77d8bdbc3c0e99ca748ab927b3e18205759bde09/rply-0.7.8-py2.py3-none-any.whl',
+    const packages = ['./appdirs-1.4.4-py2.py3-none-any.whl',
+        './rply-0.7.8-py2.py3-none-any.whl',
         './anita-0.1.13-py3-none-any.whl'];
 
     let pyodide = await loadPyodide({ indexURL, packages });
