@@ -55,12 +55,114 @@
                 <td>Ax (P->Q(x))->(P->Ax Q(x))</td>
             </tr>
         </table>
-        <div>
-            <img class="helpimg" src="./assets/regras_alfabeta.png" alt="Regras alfa e beta" />
-            <img class="helpimg" src="./assets/regras_gammadelta.png" alt="Regras gamma e delta" />
-            <p class="fontetabela">Fonte tabelas de regras: Prof. Dr. Vasconcelos</p>
-        </div>
 
+        <div id="ruletables">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="5">Tipo α</th>
+                    </tr>
+                </thead>
+                <td class="formula">
+                    T ψ∧φ<br />
+                    ↓<br />
+                    T ψ<br />
+                    T φ<br />
+                </td>
+                <td class="formula">
+                    F ψ∨φ<br />
+                    ↓<br />
+                    F ψ<br />
+                    F φ<br />
+                </td>
+                <td class="formula">
+                    F ψ→φ<br />
+                    ↓<br />
+                    T ψ<br />
+                    F φ<br />
+                </td>
+                <td class="formula">
+                    T ¬ψ<br />
+                    ↓<br />
+                    F ψ<br />
+                </td>
+                <td class="formula">
+                    F ¬ψ<br />
+                    ↓<br />
+                    T ψ<br />
+                </td>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Tipo β</th>
+                    </tr>
+                </thead>
+                <td class="formula">
+                    F ψ∧φ<br />
+                    ↙ &nbsp; ↘<br />
+                    F φ &nbsp; F φ<br />
+                </td>
+                <td class="formula">
+                    T ψ∨φ<br />
+                    ↙ &nbsp; ↘<br />
+                    T φ &nbsp; T φ<br />
+                </td>
+                <td class="formula">
+                    T ψ→φ<br />
+                    ↙ &nbsp; ↘<br />
+                    F φ &nbsp; T φ<br />
+                </td>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Tipo γ</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <th colspan="2">x é substituível por t em ψ</th>
+                </tr>
+                <tr>
+                    <td class="formula">
+                        T ∀xψ(x)<br />
+                        ↓<br />
+                        T ψ(t)<br />
+                    </td>
+                    <td class="formula">
+                        F ∃xψ(x)<br />
+                        ↓<br />
+                        F ψ(t)<br />
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Tipo δ</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <th colspan="2">a é uma variável nova</th>
+                </tr>
+                <tr>
+                    <td class="formula">
+                        F ∀xψ(x)<br />
+                        ↓<br />
+                        F ψ(a)<br />
+                    </td>
+                    <td class="formula">
+                        T ∃xψ(x)<br />
+                        ↓<br />
+                        T ψ(a)<br />
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <div>
