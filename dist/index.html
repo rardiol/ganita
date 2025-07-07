@@ -184,6 +184,18 @@
                 <div class="window_bottom_div">
                     <span class="line_number"></span>
                     <button class="closebtn" disabled>Raiz</button>
+                    <select class="color_select"
+                        onchange="this.parentElement.parentElement.style.backgroundColor = this.value">
+                        <option value="white" selected>⬜</option>
+                        <!--<option value="black">⬛</option>-->
+                        <option value="red">🟥</option>
+                        <option value="blue">🟦</option>
+                        <option value="green">🟩</option>
+                        <option value="orange">🟧</option>
+                        <option value="yellow">🟨</option>
+                        <option value="purple">🟪</option>
+                        <option value="brown">🟫</option>
+                    </select>
                     <span class="line_type"></span>
                 </div>
             </div>
@@ -195,6 +207,18 @@
                     <div class="window_bottom_div">
                         <span class="line_number"></span>
                         <button class="closebtn" onclick="closeWindow(event)">Fechar</button>
+                        <select class="color_select"
+                            onchange="this.parentElement.parentElement.style.backgroundColor = this.value">
+                            <option value="white" selected>⬜</option>
+                            <!--<option value="black">⬛</option>-->
+                            <option value="red">🟥</option>
+                            <option value="blue">🟦</option>
+                            <option value="green">🟩</option>
+                            <option value="orange">🟧</option>
+                            <option value="yellow">🟨</option>
+                            <option value="purple">🟪</option>
+                            <option value="brown">🟫</option>
+                        </select>
                         <span class="line_type"></span>
                     </div>
                 </div>
