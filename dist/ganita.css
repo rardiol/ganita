@@ -276,3 +276,9 @@ table {
     margin: 2px;
     font-size: smaller;
 }
+
+.color_select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
