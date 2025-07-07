@@ -202,6 +202,19 @@ table {
     padding: 2px;
 }
 
+#ruletables {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.formula {
+    text-align: center;
+    font-family: monospace;
+    font-style: italic;
+    text-wrap: nowrap;
+}
+
 .window_bottom_div {
     margin: 2px;
     font-size: 0.8em;
