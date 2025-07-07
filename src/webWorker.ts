@@ -7,9 +7,9 @@ async function mainPyodide(windowLocationIndex: string) {
     const indexURL: string = new URL("./pyodide", location.href).toString();
     console.log("indexURL", indexURL);
 
-    const packages = ['./appdirs-1.4.4-py2.py3-none-any.whl',
-        './rply-0.7.8-py2.py3-none-any.whl',
-        './anita-0.1.13-py3-none-any.whl'];
+    const packages = ['./py/appdirs-1.4.4-py2.py3-none-any.whl',
+        './py/rply-0.7.8-py2.py3-none-any.whl',
+        './py/anita-0.1.13-py3-none-any.whl'];
 
     let pyodide = await loadPyodide({ indexURL, packages });
     console.log("loaded pyodide");
