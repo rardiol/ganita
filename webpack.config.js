@@ -3,7 +3,7 @@ const { PyodidePlugin } = require("@pyodide/webpack-plugin");
 
 module.exports = {
     entry: './src/index.ts',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     plugins: [new PyodidePlugin()],
     devServer: {
         static: './dist',
