@@ -31,7 +31,7 @@ const rootWindow = document.getElementById('dragDropWindow1')!;
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { width: 50, height: 40 },
+    paintStyle: { width: 70, height: 60 },
     source: true,
     target: false,
     scope: "down",
@@ -49,7 +49,7 @@ const sourceEndpoint: EndpointOptions = {
 const targetEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
     // @ts-expect-error
-    paintStyle: { width: 50, height: 40 },
+    paintStyle: { width: 70, height: 60 },
     source: false,
     target: true,
     scope: "down",
@@ -59,7 +59,7 @@ const targetEndpoint: EndpointOptions = {
 };
 
 const justificationSourceEndpoint: EndpointOptions = {
-    endpoint: { type: "Dot", options: { radius: 20 } },
+    endpoint: { type: "Dot", options: { radius: 30 } },
     paintStyle: { fill: "#0F0" },
     source: true,
     target: false,
@@ -86,7 +86,7 @@ const justificationSourceEndpoint: EndpointOptions = {
 };
 
 const justificationTargetEndpoint: EndpointOptions = {
-    endpoint: { type: "Dot", options: { radius: 20 } },
+    endpoint: { type: "Dot", options: { radius: 30 } },
     paintStyle: { fill: "#5F5" },
     source: false,
     target: true,
@@ -98,7 +98,7 @@ const justificationTargetEndpoint: EndpointOptions = {
 };
 
 const closureSourceEndpoint: EndpointOptions = {
-    endpoint: { type: "Dot", options: { radius: 20 } },
+    endpoint: { type: "Dot", options: { radius: 30 } },
     paintStyle: { fill: "#00F" },
     source: true,
     target: false,
@@ -125,7 +125,7 @@ const closureSourceEndpoint: EndpointOptions = {
 };
 
 const closureTargetEndpoint: EndpointOptions = {
-    endpoint: { type: "Dot", options: { radius: 20 } },
+    endpoint: { type: "Dot", options: { radius: 30 } },
     paintStyle: { fill: "#55F" },
     source: false,
     target: true,
