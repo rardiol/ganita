@@ -202,6 +202,33 @@ table {
     padding: 2px;
 }
 
+#symboldiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 10em);
+}
+
+#symboldiv>div {
+    border: solid black;
+    border-width: 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+#symboldiv>div>*:first-child {
+    border-bottom: solid black;
+    border-width: 1px;
+    flex: 1;
+    align-content: center;
+}
+
+#symboldiv>div p {
+    margin: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    text-wrap: auto;
+    text-align: center;
+}
+
 #ruletables {
     display: flex;
     flex-direction: row;
