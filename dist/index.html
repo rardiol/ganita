@@ -238,7 +238,7 @@
         </div>
     </div>
 
-    <div>
+    <div id="topbar">
         Mostrar:
         <input type="checkbox" id="showhelp" name="showhelp" checked />
         <label for="showhelp">Ajuda</label>
@@ -246,6 +246,8 @@
         <label for="justifications_check">Justificativas</label>
         <input type="checkbox" id="closures_check" name="closures" checked />
         <label for="closures_check">Fechos</label>
+        <button id="checkbtn2" class="inlinebtn" onclick="check()" disabled>Checar ⏳</button>
+        <button id="resetbtn2" class="inlinebtn" onclick="reset()">Resetar</button>
     </div>
 
     <div id="mcdiv" class="split">
@@ -301,12 +303,7 @@
 
 
         <div id="anita_inout">
-            <div id="anita_inout2">
-
-                <div class="anita_inout_div">
-                    <button id="checkbtn" onclick="check()" disabled>Checar ⏳</button>
-                    <button id="resetbtn" onclick="reset()">Resetar</button>
-                </div>
+            <div id="anita_inout_main">
 
                 <div id="anita_input_div" class="anita_inout_div">
                     <h2>Entrada ANITA (a la Fitch)</h2>
@@ -349,6 +346,11 @@
                     </form>
 
                 </div>
+
+            </div>
+            <div id="anita_sticky_buttons" class="anita_inout_div">
+                <button id="checkbtn" onclick="check()" disabled>Checar ⏳</button>
+                <button id="resetbtn" onclick="reset()">Resetar</button>
             </div>
         </div>
 
