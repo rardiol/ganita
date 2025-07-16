@@ -175,6 +175,14 @@ h1:has(+ div + div > #showhelp:not(:checked)) {
     visibility: hidden;
 }
 
+label[for="justifications_check"] {
+    color: #00FF00;
+}
+
+label[for="closures_check"] {
+    color: #0000FF;
+}
+
 td,
 th {
     border: 1px solid rgb(190, 190, 190);
