@@ -670,6 +670,9 @@ function jsPlumbReadyFunction() {
 const pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
 console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
 console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
+window.fetch("./py/anita-0.1.13-py3-none-any.whl", { "priority": "low" });
+window.fetch("./py/rply-0.7.8-py2.py3-none-any.whl ", { "priority": "low" });
+window.fetch("./py/appdirs-1.4.4-py2.py3-none-any.whl", { "priority": "low" });
 
 console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));
 document.querySelector(".gutter-horizontal")?.appendChild(document.createElement("div"));
