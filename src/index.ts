@@ -3,6 +3,7 @@ import { BezierConnector } from "@jsplumb/connector-bezier";
 import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
 import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
+import { webworker } from "webpack";
 
 declare global {
     interface Window {
@@ -29,6 +30,7 @@ const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")
 const checkButton2: HTMLButtonElement = document.querySelector("button#checkbtn2")!;
 const rootWindow = document.getElementById('dragDropWindow1')!;
 const topBar: HTMLDivElement = document.querySelector("div#topbar")!;
+let pyodideWorker: Worker;
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
@@ -667,27 +669,30 @@ function jsPlumbReadyFunction() {
     });
 }
 
-const pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
-console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
-console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
-window.fetch("./py/anita-0.1.13-py3-none-any.whl", { "priority": "low" });
-window.fetch("./py/rply-0.7.8-py2.py3-none-any.whl ", { "priority": "low" });
-window.fetch("./py/appdirs-1.4.4-py2.py3-none-any.whl", { "priority": "low" });
+(function main() {
+    pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
+    console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
+    console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
+    window.fetch("./py/anita-0.1.13-py3-none-any.whl", { "priority": "low" });
+    window.fetch("./py/rply-0.7.8-py2.py3-none-any.whl ", { "priority": "low" });
+    window.fetch("./py/appdirs-1.4.4-py2.py3-none-any.whl", { "priority": "low" });
 
-console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));
-document.querySelector(".gutter-horizontal")?.appendChild(document.createElement("div"));
+    console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));
+    document.querySelector(".gutter-horizontal")?.appendChild(document.createElement("div"));
 
-console.log("readying");
-checkButton.disabled = true;
-checkButton2.disabled = true;
-resetLatexButtons();
-asyncRun("start").then(function (result) {
-    console.log("ready");
-    checkButton.disabled = false;
-    checkButton.innerText = "Checar";
-    checkButton2.disabled = false;
-    checkButton2.innerText = "Checar";
-})
-console.log("readying2");
+    console.log("readying");
+    checkButton.disabled = true;
+    checkButton2.disabled = true;
+    resetLatexButtons();
+    asyncRun("start").then(function (result) {
+        console.log("ready");
+        checkButton.disabled = false;
+        checkButton.innerText = "Checar";
+        checkButton2.disabled = false;
+        checkButton2.innerText = "Checar";
+    })
+    console.log("readying2");
 
-jsPlumbReady(jsPlumbReadyFunction);
+    jsPlumbReady(jsPlumbReadyFunction);
+})();
+
