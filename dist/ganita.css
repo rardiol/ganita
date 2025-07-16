@@ -183,6 +183,12 @@ label[for="closures_check"] {
     color: #0000FF;
 }
 
+.inlinebtn {
+    height: 2em;
+    padding: 2px;
+    margin: 3px 1px 3px 1px;
+}
+
 td,
 th {
     border: 1px solid rgb(190, 190, 190);
@@ -257,16 +263,24 @@ table {
     white-space: nowrap;
 }
 
-#anita_inout2 {
+#anita_inout_main {
     border-right: solid darkgray;
     border-bottom: solid darkgray;
-    position: sticky;
-    top: 1px;
 }
 
 .anita_inout_div {
     border-top: solid darkgray;
     padding: 8px;
+}
+
+#anita_sticky_buttons {
+    margin-top: 5px;
+    border-top: solid rgb(138, 138, 138);
+    border-right: solid rgb(138, 138, 138);
+    border-bottom: solid rgb(138, 138, 138);
+    position: sticky;
+    top: 0px;
+    box-sizing: content-box;
 }
 
 .formularinp {

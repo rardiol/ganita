@@ -26,7 +26,9 @@ const anitaOutputColoredLatexArea: HTMLParagraphElement = document.querySelector
 const anitaOutputLatexOverleafArea: HTMLTextAreaElement = document.querySelector("#overleaf_form_textarea")!;
 const anitaOutputColoredLatexOverleafArea: HTMLTextAreaElement = document.querySelector("#overleaf_colored_form_textarea")!;
 const checkButton: HTMLButtonElement = document.querySelector("button#checkbtn")!;
+const checkButton2: HTMLButtonElement = document.querySelector("button#checkbtn2")!;
 const rootWindow = document.getElementById('dragDropWindow1')!;
+const topBar: HTMLDivElement = document.querySelector("div#topbar")!;
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
@@ -240,6 +242,7 @@ ${text}
 
 window.check = async function check(params: PointerEvent) {
     console.log("check");
+    topBar.scrollIntoView();
     let anitaInput;
     try {
         anitaInput = tree2anita();
@@ -673,11 +676,14 @@ document.querySelector(".gutter-horizontal")?.appendChild(document.createElement
 
 console.log("readying");
 checkButton.disabled = true;
+checkButton2.disabled = true;
 resetLatexButtons();
 asyncRun("start").then(function (result) {
     console.log("ready");
     checkButton.disabled = false;
     checkButton.innerText = "Checar";
+    checkButton2.disabled = false;
+    checkButton2.innerText = "Checar";
 })
 console.log("readying2");
 
