@@ -1,0 +1,27 @@
+{
+    "short_name": "GANITA",
+    "icons": [
+        {
+            "src": "./favicon.icon",
+            "sizes": "16x16",
+            "type": "image/vnd.microsoft.icon"
+        },
+        {
+            "src": "./assets/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone"
+}
