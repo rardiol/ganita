@@ -18,6 +18,9 @@ module.exports = {
     devServer: {
         static: './dist',
         hot: false,
+        devMiddleware: {
+            writeToDisk: true,
+        },
     },
     module: {
         rules: [
