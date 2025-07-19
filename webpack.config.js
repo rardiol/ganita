@@ -1,10 +1,20 @@
 const path = require('path');
 const { PyodidePlugin } = require("@pyodide/webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
     devtool: 'source-map',
-    plugins: [new PyodidePlugin()],
+    plugins: [
+        new PyodidePlugin(),
+        new WorkboxPlugin.GenerateSW({
+            // these options encourage the ServiceWorkers to get in there fast
+            // and not allow any straggling "old" SWs to hang around
+            clientsClaim: true,
+            skipWaiting: true,
+            maximumFileSizeToCacheInBytes: 1024 * 1024 * 20,
+        }),
+    ],
     devServer: {
         static: './dist',
         hot: false,
