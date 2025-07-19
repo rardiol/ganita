@@ -5,6 +5,7 @@ import Split from "split.js"
 import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 import { webworker } from "webpack";
 import "./ganita.css";
+import { pyodidePackages } from "./globals";
 
 declare global {
     interface Window {
@@ -32,6 +33,7 @@ const checkButton2: HTMLButtonElement = document.querySelector("button#checkbtn2
 const rootWindow = document.getElementById('dragDropWindow1')!;
 const topBar: HTMLDivElement = document.querySelector("div#topbar")!;
 let pyodideWorker: Worker;
+
 
 const sourceEndpoint: EndpointOptions = {
     endpoint: "Rectangle",
@@ -671,24 +673,25 @@ function jsPlumbReadyFunction() {
 }
 
 (function main() {
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js', { scope: "./" }).then(
-            registration => {
-                console.log('SW registered: ', registration);
-            }).catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    } else {
-        console.error("Service workers are not supported.");
-    }
-
+    /*
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js', { scope: "./" }).then(
+                registration => {
+                    console.log('SW registered: ', registration);
+                }).catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        } else {
+            console.error("Service workers are not supported.");
+        }
+    */
     pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
     console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
     console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
-    window.fetch("./py/anita-0.1.13-py3-none-any.whl", { "priority": "low" });
-    window.fetch("./py/rply-0.7.8-py2.py3-none-any.whl ", { "priority": "low" });
-    window.fetch("./py/appdirs-1.4.4-py2.py3-none-any.whl", { "priority": "low" });
+
+    for (const pkg of pyodidePackages) {
+        window.fetch(new URL("./py/" + pkg, import.meta.url), { "priority": "low" });
+    }
 
     console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));
     document.querySelector(".gutter-horizontal")?.appendChild(document.createElement("div"));
