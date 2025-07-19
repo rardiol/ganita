@@ -4,6 +4,7 @@ import { FlowchartConnector } from "@jsplumb/connector-flowchart";
 import Split from "split.js"
 import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 import { webworker } from "webpack";
+import "./ganita.css";
 
 declare global {
     interface Window {
