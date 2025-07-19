@@ -1,5 +1,6 @@
 import { loadPyodide } from "pyodide";
 import mainPy from './mainPy.py';
+import { pyodidePackages } from './globals';
 
 async function mainPyodide(windowLocationIndex: string) {
     console.log("mainPyodide", location, windowLocationIndex);
@@ -7,11 +8,7 @@ async function mainPyodide(windowLocationIndex: string) {
     const indexURL: string = new URL("./pyodide", location.href).toString();
     console.log("indexURL", indexURL);
 
-    const packages = ['./py/appdirs-1.4.4-py2.py3-none-any.whl',
-        './py/rply-0.7.8-py2.py3-none-any.whl',
-        './py/anita-0.1.13-py3-none-any.whl'];
-
-    let pyodide = await loadPyodide({ indexURL, packages });
+    let pyodide = await loadPyodide({ indexURL, packages: pyodidePackages });
     console.log("loaded pyodide");
 
     const pyresult = pyodide.runPython(mainPy);
