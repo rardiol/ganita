@@ -670,6 +670,18 @@ function jsPlumbReadyFunction() {
 }
 
 (function main() {
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js', { scope: "./" }).then(
+            registration => {
+                console.log('SW registered: ', registration);
+            }).catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    } else {
+        console.error("Service workers are not supported.");
+    }
+
     pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
     console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
     console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
