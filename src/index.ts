@@ -690,7 +690,7 @@ function jsPlumbReadyFunction() {
     console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
 
     for (const pkg of pyodidePackages) {
-        window.fetch(new URL("./py/" + pkg, import.meta.url), { "priority": "low" });
+        window.fetch(pkg, { "priority": "low" });
     }
 
     console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));

@@ -7,8 +7,9 @@ async function mainPyodide(windowLocationIndex: string) {
 
     const indexURL: string = new URL("./pyodide", location.href).toString();
     console.log("indexURL", indexURL);
+    const packages = pyodidePackages.map((url) => url.toString());
 
-    let pyodide = await loadPyodide({ indexURL, packages: pyodidePackages });
+    let pyodide = await loadPyodide({ indexURL, packages });
     console.log("loaded pyodide");
 
     const pyresult = pyodide.runPython(mainPy);
