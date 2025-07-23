@@ -2,6 +2,7 @@ const path = require('path');
 const { PyodidePlugin } = require("@pyodide/webpack-plugin");
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: './src/index.ts',
@@ -20,6 +21,7 @@ module.exports = {
             favicon: './favicon.ico',
             template: './src/index.html',
         }),
+        new MiniCssExtractPlugin()
     ],
     devServer: {
         static: './dist',
@@ -43,7 +45,7 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
                 test: /\.tsx?$/,
