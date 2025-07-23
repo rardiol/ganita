@@ -2,7 +2,7 @@
     "short_name": "GANITA",
     "icons": [
         {
-            "src": "./favicon.icon",
+            "src": "./favicon.ico",
             "sizes": "16x16",
             "type": "image/vnd.microsoft.icon"
         },
