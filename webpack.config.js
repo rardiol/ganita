@@ -1,6 +1,7 @@
 const path = require('path');
 const { PyodidePlugin } = require("@pyodide/webpack-plugin");
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -13,6 +14,11 @@ module.exports = {
             clientsClaim: true,
             skipWaiting: true,
             maximumFileSizeToCacheInBytes: 1024 * 1024 * 20,
+        }),
+        new HtmlWebpackPlugin({
+            title: 'GANITA',
+            favicon: './favicon.ico',
+            template: './src/index.html',
         }),
     ],
     devServer: {
@@ -30,6 +36,10 @@ module.exports = {
                 generator: {
                     emit: false,
                 },
+            },
+            {
+                test: /\.html$/i,
+                loader: "html-loader",
             },
             {
                 test: /\.css$/i,
