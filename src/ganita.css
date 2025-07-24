@@ -211,6 +211,15 @@ table {
     margin: 2px;
 }
 
+summary {
+    color: blue;
+    text-decoration: underline;
+}
+
+.exemplo {
+    max-width: 90%;
+}
+
 .closebtn {
     font-size: inherit;
     padding: 2px;
