@@ -258,6 +258,10 @@ summary {
     flex-wrap: wrap;
 }
 
+.fontpick {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .formula {}
 
 .formulaimg {}
