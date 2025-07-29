@@ -258,11 +258,9 @@ summary {
     flex-wrap: wrap;
 }
 
-.formula {
-    text-align: center;
-    font-family: monospace;
-    text-wrap: nowrap;
-}
+.formula {}
+
+.formulaimg {}
 
 .window_bottom_div {
     margin: 2px;
