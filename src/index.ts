@@ -6,6 +6,7 @@ import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 import "./ganita.css";
 import { webworker } from "webpack";
 import { pyodidePackages } from "./globals";
+import { ParserAnita, check_proof } from "./py/anita/anita/__target__/anita_pt_fo.js";
 
 declare global {
     interface Window {
@@ -15,8 +16,10 @@ declare global {
         copy_latex: Function;
         copy_colored_latex: Function
         j: JsPlumbInstance;
+        c: Function;
     }
 }
+window.c = check_proof;
 
 let windowCounterID = 0;
 
@@ -196,6 +199,13 @@ function setNewInput(el: HTMLElement, windowCounterID: number) {
     const newInput = el.querySelector("input")!;
     newInput.setAttribute("id", "input" + windowCounterID);
     newInput.setAttribute("name", windowCounterID.toString());
+    if (!('ontouchstart' in document.documentElement)) {
+        console.log("1");
+        newInput.focus({ preventScroll: true });
+    }
+    else {
+        console.log("2");
+    }
 }
 
 function closeWindow2(target: HTMLElement) {
@@ -618,6 +628,7 @@ function jsPlumbReadyFunction() {
         instance.bind("endpoint:dblclick", function (params, originalEvent) {
             console.log("edbl", params);
             createNewWindow(params.element, instance);
+            originalEvent.preventDefault();
         });
 
         instance.bind("beforeDrag", function (params, originalEvent) {
@@ -625,6 +636,8 @@ function jsPlumbReadyFunction() {
             const endpoint: Endpoint = params.endpoint;
             if (endpoint.scope == "down" && endpoint.isSource && endpoint.connections.length < 2) {
                 temporaryWindow = createNewWindow(params.source, instance, endpoint.connections.length == 1);
+                originalEvent.preventDefault();
+
                 instance.repaintEverything();
                 console.log("new temporaryWindow", temporaryWindow);
             }
@@ -683,6 +696,8 @@ function jsPlumbReadyFunction() {
     } else {
         console.error("Service workers are not supported.");
     }
+
+    //console.log(check_proof("1. T A pre\n2. F A conclusao\n3. @ 1,2"));
 
     pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
     console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
