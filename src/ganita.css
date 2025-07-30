@@ -154,8 +154,20 @@ path,
     opacity: 1;
 }
 
+.jtk-endpoint-connected {
+    opacity: 0.65;
+}
+
 .jtk-endpoint-full {
     opacity: 0.2;
+}
+
+.source.down>rect {
+    fill: #181818;
+}
+
+.target.down>rect {
+    fill: #525252;
 }
 
 .jtk-endpoint-drop-allowed {
@@ -321,10 +333,6 @@ summary {
 
 .overleaf_textarea {
     display: none;
-}
-
-.down>rect {
-    fill: #6b6b6b;
 }
 
 .helpimg {
