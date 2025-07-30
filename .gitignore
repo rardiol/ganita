@@ -2,3 +2,4 @@ node_modules/
 dist/*bundle*
 dist/pyodide
 dist/
+python_venv/
