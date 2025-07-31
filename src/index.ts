@@ -673,7 +673,6 @@ function jsPlumbReadyFunction() {
 }
 
 (function main() {
-    /*
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js', { scope: "./" }).then(
             registration => {
@@ -684,7 +683,6 @@ function jsPlumbReadyFunction() {
     } else {
         console.error("Service workers are not supported.");
     }
-        */
 
     pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
     console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
