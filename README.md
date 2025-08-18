@@ -10,7 +10,7 @@ Para informação sobre os pacotes JS utilizados, consulte package.json, package
 
 Os outros arquivos são licenciados sob a GNU General Public License, versão 2.0 ou posterior.
 
-=================================================================
+==================================================================
 
 ### English
 
