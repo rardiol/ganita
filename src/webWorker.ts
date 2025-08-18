@@ -1,28 +1,6 @@
-import { loadPyodide } from "pyodide";
-import mainPy from './mainPy.py';
-import { pyodidePackages } from './globals';
-
-async function mainPyodide(windowLocationIndex: string) {
-    console.log("mainPyodide", location, windowLocationIndex);
-
-    const indexURL: string = new URL("./pyodide", location.href).toString();
-    console.log("indexURL", indexURL);
-    const packages = pyodidePackages.map((url) => url.toString());
-
-    let pyodide = await loadPyodide({ indexURL, packages });
-    console.log("loaded pyodide");
-
-    const pyresult = pyodide.runPython(mainPy);
-    console.log("ran pyodide");
-    console.log(pyresult);
-    console.log(typeof pyresult);
-
-    return pyodide;
-}
-
-let pyodideReadyPromise: Promise<any> | null = null;
 
 self.onmessage = async (event) => {
+    /*
     console.log("onmessage", event, event.data);
     if (pyodideReadyPromise === null) {
         console.log("onmessage mainPyodide");
@@ -54,4 +32,5 @@ self.onmessage = async (event) => {
         self.postMessage({ error: error, id });
         console.log("error3");
     }
+        */
 };

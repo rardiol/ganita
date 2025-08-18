@@ -1,5 +1,4 @@
 const path = require('path');
-const { PyodidePlugin } = require("@pyodide/webpack-plugin");
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -8,7 +7,6 @@ module.exports = {
     entry: './src/index.ts',
     devtool: 'source-map',
     plugins: [
-        new PyodidePlugin(),
         new WorkboxPlugin.GenerateSW({
             // these options encourage the ServiceWorkers to get in there fast
             // and not allow any straggling "old" SWs to hang around
@@ -32,13 +30,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.py/,
-                type: 'asset/source',
-                generator: {
-                    emit: false,
-                },
-            },
             {
                 test: /\.html$/i,
                 loader: "html-loader",

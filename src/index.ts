@@ -5,7 +5,6 @@ import Split from "split.js"
 import "@jsplumb/browser-ui/css/jsplumbtoolkit.css"
 import "./ganita.css";
 import { webworker } from "webpack";
-import { pyodidePackages } from "./globals";
 import { ParserAnita, check_proof } from "./py/anita/anita/__target__/anita_pt_fo.js";
 
 declare global {
@@ -702,10 +701,6 @@ function jsPlumbReadyFunction() {
     pyodideWorker = new Worker(new URL('./webWorker', import.meta.url), { type: "module" });
     console.log("pyodideWorker", pyodideWorker, import.meta.url, `${window.location.origin}/pyodide`);
     console.log("sending indexURL", pyodideWorker.postMessage({ indexURL: `${window.location}` })); // TODO: remove
-
-    for (const pkg of pyodidePackages) {
-        window.fetch(pkg, { "priority": "low" });
-    }
 
     console.log(Split(['#canvas', '#anita_inout'], { sizes: [70, 30], minSize: 20 }));
     document.querySelector(".gutter-horizontal")?.appendChild(document.createElement("div"));
